@@ -59,7 +59,7 @@ public final class App {
     public static void main(final String[] args) {
         List<Person> personList = fillPersonList();
         DAOPerson daoPerson = new DAOPerson();
-        daoPerson.setConnection(ConnectionDB.getConnection());
+        daoPerson.setConnection(ConnectionDB.initConnection());
 
         for (Person person : personList) {
             daoPerson.createPerson(person);

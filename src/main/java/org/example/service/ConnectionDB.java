@@ -25,17 +25,17 @@ public class ConnectionDB {
     /**
      * initialisation current connection.
      */
-    public static Connection getConnection() {
-        Connection conn = null;
+    public static Connection initConnection() {
+        Connection connection = null;
         try {
-            conn = DataProperties.getConnection();
-            if (conn != null) {
-                conn.setAutoCommit(false);
+            connection = DataProperties.getConnection();
+            if (connection != null) {
+                connection.setAutoCommit(false);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return conn;
+        return connection;
     }
 
     /**
@@ -43,35 +43,35 @@ public class ConnectionDB {
      * @param pKey  true - return genereted key, false - not return
      *              initialisation statements in current connection.
      */
-    public static PreparedStatement setConnection(final String query,
+    public static PreparedStatement initStatement(final String query,
                                                   final boolean pKey,
-                                                  final Connection conn) {
-        PreparedStatement statement1 = null;
+                                                  final Connection connection) {
+        PreparedStatement statement = null;
         try {
-            if (conn != null) {
+            if (connection != null) {
 
                 if (pKey) {
-                    statement1 = conn.prepareStatement(query, RETURN_KEY);
+                    statement = connection.prepareStatement(query, RETURN_KEY);
                 } else {
-                    statement1 = conn.prepareStatement(query);
+                    statement = connection.prepareStatement(query);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return statement1;
+        return statement;
     }
 
     /**
      * фиксирует  транзакцию.
      */
-    public static void commit(Connection conn, PreparedStatement stmt) {
+    public static void commit(Connection connection, PreparedStatement statement) {
         try {
-            stmt.executeUpdate();
-            conn.commit();
+            statement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             try {
-                conn.rollback();
+                connection.rollback();
             } catch (SQLException ex) {
                 e.printStackTrace();
             }
@@ -115,10 +115,11 @@ public class ConnectionDB {
      * @param values список значений для установки в prepared statement
      * @param <T>    тип сущности
      */
-    public static <T> void setValues(final List<T> values, PreparedStatement statement1) {
+    public static <T> void setValues(final List<T> values,
+                                     PreparedStatement statement) {
         int i = 1;
         for (Object value : values) {
-            setValue(i, value, statement1);
+            setValue(i, value, statement);
             i++;
         }
     }
@@ -134,24 +135,24 @@ public class ConnectionDB {
      */
     private static <T> void setValue(final int index,
                                      final T value,
-                                     PreparedStatement statement1) {
+                                     PreparedStatement statement) {
         try {
             if (value.getClass().equals(Byte.class)) {
-                statement1.setByte(index, (byte) value);
+                statement.setByte(index, (byte) value);
             } else if (value.getClass().equals(Short.class)) {
-                statement1.setShort(index, (short) value);
+                statement.setShort(index, (short) value);
             } else if (value.getClass().equals(Integer.class)) {
-                statement1.setInt(index, (int) value);
+                statement.setInt(index, (int) value);
             } else if (value.getClass().equals(Long.class)) {
-                statement1.setLong(index, (long) value);
+                statement.setLong(index, (long) value);
             } else if (value.getClass().equals(Float.class)) {
-                statement1.setFloat(index, (float) value);
+                statement.setFloat(index, (float) value);
             } else if (value.getClass().equals(Double.class)) {
-                statement1.setDouble(index, (double) value);
+                statement.setDouble(index, (double) value);
             } else if (value.getClass().equals(Boolean.class)) {
-                statement1.setBoolean(index, (boolean) value);
+                statement.setBoolean(index, (boolean) value);
             } else {
-                statement1.setString(index, (String) value);
+                statement.setString(index, (String) value);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -164,10 +165,10 @@ public class ConnectionDB {
      * @param t   объект сущности
      * @param <T> тип сущности
      */
-    public static <T> void setId(final T t, PreparedStatement stmt) {
+    public static <T> void setId(final T t, PreparedStatement statement) {
         ResultSet rs;
         try {
-            rs = stmt.getGeneratedKeys();
+            rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 ObjectService.setId(rs.getInt(FIRST_INDEX), t);
             }
