@@ -2,6 +2,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
     <changeSet id="create_table_person" author="Katerina">
         <createTable tableName="person">
             <column autoIncrement="true" name="id" type="int">
@@ -28,4 +29,5 @@
             DELETE FROM person WHERE name LIKE 'Mandy' surname LIKE 'Parkinson';
         </rollback>
     </changeSet>
+
 </databaseChangeLog>
