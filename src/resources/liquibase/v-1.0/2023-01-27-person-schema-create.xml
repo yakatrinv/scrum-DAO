@@ -2,6 +2,19 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="create_table_person" author="Katerina">
+        <createTable tableName="person">
+            <column autoIncrement="true" name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="surname" type="varchar(100)"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="person"/>
+        </rollback>
+    </changeSet>
+
     <changeSet id="insert_table_person" author="Katerina">
         <insert tableName="person">
             <column name="name">Billy</column>
@@ -11,5 +24,8 @@
             <column name="name">Mandy</column>
             <column name="surname">Parkinson</column>
         </insert>
+        <rollback>
+            DELETE FROM person WHERE name LIKE 'Mandy' surname LIKE 'Parkinson';
+        </rollback>
     </changeSet>
 </databaseChangeLog>

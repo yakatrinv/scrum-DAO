@@ -5,5 +5,5 @@
     <changeSet id="1.0" author="Katerina">
         <tagDatabase tag="v1.0"/>
     </changeSet>
-    <include file="create-changeset-person-table-v.1.0.xml" relativeToChangelogFile="true"/>
+    <include file="2023-01-27-person-schema-create.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
