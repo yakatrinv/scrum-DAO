@@ -1,7 +1,7 @@
 package org.example.service;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,10 +19,10 @@ public class DataPropertiesTest {
             Class.forName(JDBC_DRIVER);
             connection = DriverManager.getConnection(DB_URL, USER, PASS);
         } catch (SQLException e) {
-            Assert.fail("Expected IOException");
+            Assertions.fail("Expected IOException");
         } catch (ClassNotFoundException e) {
-            Assert.fail("Expected ClassNotFoundException");
+            Assertions.fail("Expected ClassNotFoundException");
         }
-        Assert.assertNotNull(connection);
+        Assertions.assertNotNull(connection);
     }
 }

@@ -1,8 +1,8 @@
 package org.example.service;
 
 import org.example.Person;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class DataQueryTest {
     public Person person = Person.builder()
@@ -13,30 +13,35 @@ public class DataQueryTest {
 
     @Test
     public void getInsertQuery() {
-        String actualQuery = "INSERT INTO person (name,surname) VALUE (?,?);";
+        String actualQuery = "INSERT INTO person (name,surname) VALUES (?,?);";
         String query = DataQuery.getInsertQuery(person);
-        Assert.assertEquals("Текст запроса не совпадает",query,actualQuery);
+        Assertions.assertEquals(query, actualQuery,
+                "Текст запроса не совпадает");
     }
 
     @Test
     public void getSelectQuery() {
         String actualQuery = "SELECT * FROM person WHERE id = ?;";
         String query = DataQuery.getSelectQuery(person);
-        Assert.assertEquals("Текст запроса не совпадает",query,actualQuery);
+        Assertions.assertEquals(query, actualQuery,
+                "Текст запроса не совпадает");
     }
 
     @Test
     public void getUpdateQuery() {
-        String actualQuery = "UPDATE person SET name = ?,surname = ? WHERE id = ?;";
+        String actualQuery
+                = "UPDATE person SET name = ? ,surname = ? WHERE id = ?;";
 
         String query = DataQuery.getUpdateQuery(person);
-        Assert.assertEquals("Текст запроса не совпадает",query,actualQuery);
+        Assertions.assertEquals(query, actualQuery,
+                "Текст запроса не совпадает");
     }
 
     @Test
     public void getDeleteQuery() {
         String actualQuery = "DELETE FROM person WHERE id = ?;";
         String query = DataQuery.getDeleteQuery(person);
-        Assert.assertEquals("Текст запроса не совпадает",query,actualQuery);
+        Assertions.assertEquals(query, actualQuery,
+                "Текст запроса не совпадает");
     }
 }

@@ -1,8 +1,12 @@
 package org.example.service;
 
-import org.junit.Before;
 
-import java.sql.*;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ConnectionDBTest {
     static final String JDBC_DRIVER = "org.h2.Driver";
@@ -14,7 +18,7 @@ public class ConnectionDBTest {
     public String query = "INSERT INTO person (name,surname) VALUE (?,?);";
     public String quetySelect = "SELECT * FROM person WHERE id = ?;";
 
-    @Before
+    @BeforeEach
     public void createTable() {
         query = "INSERT INTO personTest (id,name, surname) "
                 + "VALUES (34,'nameP','surnameP')";
