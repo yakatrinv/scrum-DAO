@@ -18,7 +18,8 @@ public final class DataQuery {
      * SQL шаблон для добавления записи в базу данных
      * используется при формировании строки запроса.
      */
-    public static final String INSERT_QUERY = "INSERT INTO %s (%s) VALUE (%s);";
+    public static final String INSERT_QUERY
+            = "INSERT INTO %s (%s) VALUES (%s);";
     /**
      * SQL шаблон для выбора записей в базу данных
      * используется при формировании строки запроса.
