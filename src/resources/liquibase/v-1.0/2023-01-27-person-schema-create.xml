@@ -25,7 +25,7 @@
             <column name="surname">Parkinson</column>
         </insert>
         <rollback>
-            DELETE FROM person WHERE namhe LIKE 'Mandy' surname LIKE 'Parkinson';
+            DELETE FROM person WHERE name LIKE 'Mandy' surname LIKE 'Parkinson';
         </rollback>
     </changeSet>
 </databaseChangeLog>
