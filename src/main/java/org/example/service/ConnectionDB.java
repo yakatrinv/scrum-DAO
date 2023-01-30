@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * class for work with connection jbdc.
  */
-public class ConnectionDB {
+public final class ConnectionDB {
     /**
      * return generate key after query.
      */
@@ -23,7 +23,14 @@ public class ConnectionDB {
     public static final int FIRST_INDEX = 1;
 
     /**
+     * private constructor.
+     */
+    private ConnectionDB() {
+    }
+
+    /**
      * initialisation current connection.
+     * @return 'connection'
      */
     public static Connection initConnection() {
         Connection connection = null;
@@ -42,6 +49,8 @@ public class ConnectionDB {
      * @param query SQL query for inintialisation
      * @param pKey  true - return genereted key, false - not return
      *              initialisation statements in current connection.
+     * @param connection current connection
+     * @return 'statement'
      */
     public static PreparedStatement initStatement(final String query,
                                                   final boolean pKey,
@@ -64,8 +73,11 @@ public class ConnectionDB {
 
     /**
      * фиксирует  транзакцию.
+     * @param statement current statement
+     * @param connection current connection
      */
-    public static void commit(Connection connection, PreparedStatement statement) {
+    public static void commit(final Connection connection,
+                              final PreparedStatement statement) {
         try {
             statement.executeUpdate();
             connection.commit();
@@ -83,8 +95,9 @@ public class ConnectionDB {
      * выполняет запрос из prepared statement.
      *
      * @return результат выполнения запроса
+     * @param statement current statement
      */
-    public static ResultSet execute(PreparedStatement statement) {
+    public static ResultSet execute(final PreparedStatement statement) {
         try {
             return statement.executeQuery();
         } catch (SQLException e) {
@@ -95,8 +108,10 @@ public class ConnectionDB {
 
     /**
      * закрывает открытые соединения.
+     * @param dao DAO
+     * @param <T> тип сущности
      */
-    public static <T> void closeConnection(DAO<T> dao) {
+    public static <T> void closeConnection(final DAO<T> dao) {
         try {
             if (dao.getStatement() != null) {
                 dao.getStatement().close();
@@ -111,12 +126,12 @@ public class ConnectionDB {
 
     /**
      * Устанавлиавает перечень значений в prepared statement.
-     *
      * @param values список значений для установки в prepared statement
      * @param <T>    тип сущности
+     * @param statement  current statement
      */
     public static <T> void setValues(final List<T> values,
-                                     PreparedStatement statement) {
+                                     final PreparedStatement statement) {
         int i = 1;
         for (Object value : values) {
             setValue(i, value, statement);
@@ -132,10 +147,11 @@ public class ConnectionDB {
      * @param value значение, котороевносится значение в запрос,
      *              который установлен в prepared statement
      * @param <T>   тип сущности
+     * @param statement current statement
      */
     private static <T> void setValue(final int index,
                                      final T value,
-                                     PreparedStatement statement) {
+                                     final PreparedStatement statement) {
         try {
             if (value.getClass().equals(Byte.class)) {
                 statement.setByte(index, (byte) value);
@@ -164,8 +180,9 @@ public class ConnectionDB {
      *
      * @param t   объект сущности
      * @param <T> тип сущности
+     * @param statement current statement
      */
-    public static <T> void setId(final T t, PreparedStatement statement) {
+    public static <T> void setId(final T t, final PreparedStatement statement) {
         ResultSet rs;
         try {
             rs = statement.getGeneratedKeys();

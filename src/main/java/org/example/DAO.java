@@ -24,18 +24,35 @@ public class DAO<T> implements IDAO<T> {
      * константа указывает, что получать primary key не нужно.
      */
     public static final boolean NOT_RETURN_PRIMARY_KEY = false;
-
+    /**
+     * connection.
+     */
     private Connection connection = null;
+    /**
+     * statement.
+     */
     private PreparedStatement statement = null;
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
+    /**
+     * set Connection.
+     * @param connect current connection
+     */
+    public void setConnection(final Connection connect) {
+        this.connection = connect;
     }
 
+    /**
+     * Get Connection.
+     * @return connection
+     */
     public Connection getConnection() {
         return connection;
     }
 
+    /**
+     * get Statement.
+     * @return statement
+     */
     public PreparedStatement getStatement() {
         return statement;
     }
@@ -50,10 +67,15 @@ public class DAO<T> implements IDAO<T> {
     public void insert(final T t) {
         String query = DataQuery.getInsertQuery(t);
 
-        statement = ConnectionDB.initStatement(query,RETURN_PRIMARY_KEY,connection);
-        ConnectionDB.setValues(ObjectService.getValuesWithoutPk(t),statement);
-        ConnectionDB.commit(connection,statement);
-        ConnectionDB.setId(t,statement);
+        statement = ConnectionDB.initStatement(query,
+                RETURN_PRIMARY_KEY,
+                connection);
+        ConnectionDB.setValues(ObjectService.getValuesWithoutPk(t),
+                statement);
+        ConnectionDB.commit(connection,
+                statement);
+        ConnectionDB.setId(t,
+                statement);
     }
 
     /**
@@ -64,8 +86,11 @@ public class DAO<T> implements IDAO<T> {
     public void select(final T t) {
         String query = DataQuery.getSelectQuery(t);
 
-        statement = ConnectionDB.initStatement(query,NOT_RETURN_PRIMARY_KEY,connection);
-        ConnectionDB.setValues(ObjectService.getValuesPk(t),statement);
+        statement = ConnectionDB.initStatement(query,
+                NOT_RETURN_PRIMARY_KEY,
+                connection);
+        ConnectionDB.setValues(ObjectService.getValuesPk(t),
+                statement);
         ResultSet rs = ConnectionDB.execute(statement);
         if (rs != null) {
             ConnectionDB.printResult(rs, t);
@@ -80,9 +105,13 @@ public class DAO<T> implements IDAO<T> {
     public void update(final T t) {
         String query = DataQuery.getUpdateQuery(t);
 
-        statement = ConnectionDB.initStatement(query,NOT_RETURN_PRIMARY_KEY,connection);
-        ConnectionDB.setValues(ObjectService.getValuesWithPk(t),statement);
-        ConnectionDB.commit(connection,statement);
+        statement = ConnectionDB.initStatement(query,
+                NOT_RETURN_PRIMARY_KEY,
+                connection);
+        ConnectionDB.setValues(ObjectService.getValuesWithPk(t),
+                statement);
+        ConnectionDB.commit(connection,
+                statement);
     }
 
     /**
@@ -93,8 +122,12 @@ public class DAO<T> implements IDAO<T> {
     public void delete(final T t) {
         String query = DataQuery.getDeleteQuery(t);
 
-        statement = ConnectionDB.initStatement(query,NOT_RETURN_PRIMARY_KEY,connection);
-        ConnectionDB.setValues(ObjectService.getValuesPk(t),statement);
-        ConnectionDB.commit(connection,statement);
+        statement = ConnectionDB.initStatement(query,
+                NOT_RETURN_PRIMARY_KEY,
+                connection);
+        ConnectionDB.setValues(ObjectService.getValuesPk(t),
+                statement);
+        ConnectionDB.commit(connection,
+                statement);
     }
 }
