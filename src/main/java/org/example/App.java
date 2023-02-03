@@ -67,7 +67,7 @@ public final class App {
             daoPerson.createPerson(person);
         }
         for (Person person : personList) {
-            daoPerson.findPerson(person);
+            daoPerson.findPersonById(person);
         }
         personList.get(ONE).setName(NEW_NAME);
         daoPerson.updatePerson(personList.get(ONE));

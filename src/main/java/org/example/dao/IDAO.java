@@ -34,5 +34,5 @@ public interface IDAO<T> {
      * @param t объект сущности.
      *          удаление сущности в базе данных.
      */
-    void delete(T t);
+    void deleteById(T t);
 }

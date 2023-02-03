@@ -28,14 +28,22 @@ public class DAOServicePerson extends DAOService<Person> implements IDAOPerson {
      */
     @Override
     public void deletePerson(final Person person) {
-        this.delete(person);
+        this.deleteById(person);
     }
 
     /**
      * поиск сущности в базе данных по id объекта класса Person.
      */
     @Override
-    public void findPerson(final Person person) {
+    public void findPersonById(final Person person) {
         this.selectById(person);
+    }
+
+    /**
+     * поиск всех сущностей в базе данных по id объекта класса Person.
+     */
+    @Override
+    public void findAllPerson() {
+        this.selectAll();
     }
 }

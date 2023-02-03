@@ -3,51 +3,21 @@ package org.example.dataSource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.example.entity.Util.CHAR_QUESTION;
+import static org.example.entity.Util.DELETE_QUERY;
+import static org.example.entity.Util.DELIMITER;
+import static org.example.entity.Util.DELIMITER_UPD;
+import static org.example.entity.Util.DELIM_UPD_END;
+import static org.example.entity.Util.INSERT_QUERY;
+import static org.example.entity.Util.SELECT_QUERY;
+import static org.example.entity.Util.UPDATE_QUERY;
+
 /**
  * @author Katerina
  * @version 1.0
  * класс с константными строками шаблонов заапросов.
  */
 public final class DataQuery {
-    /**
-     * символ для указания параметра в запросе
-     * используется при формировании строки запроса.
-     */
-    public static final String CHAR_QUESTION = "?";
-    /**
-     * SQL шаблон для добавления записи в базу данных
-     * используется при формировании строки запроса.
-     */
-    public static final String INSERT_QUERY
-            = "INSERT INTO %s (%s) VALUES (%s);";
-    /**
-     * SQL шаблон для выбора записей в базу данных
-     * используется при формировании строки запроса.
-     */
-    public static final String SELECT_QUERY = "SELECT * FROM %s WHERE %s = %s;";
-    /**
-     * SQL шаблон для обновления записи в базу данных
-     * используется при формировании строки запроса.
-     */
-    public static final String UPDATE_QUERY = "UPDATE %s SET %s WHERE %s = ?;";
-    /**
-     * SQL шаблон для удаления записи в базу данных
-     * используется при формировании строки запроса.
-     */
-    public static final String DELETE_QUERY = "DELETE FROM %s WHERE %s = ?;";
-    /**
-     * delimiter for columns.
-     */
-    public static final String DELIMITER = ",";
-    /**
-     * delimiter for columns in update query.
-     */
-    public static final String DELIMITER_UPD = " = ? ,";
-    /**
-     * delimiter for columns in update query in the end.
-     */
-    public static final String DELIM_UPD_END = " = ?";
-
     /**
      * конструктор по умолчанию.
      */
@@ -64,11 +34,11 @@ public final class DataQuery {
         String nameTable = ObjectService.getNameTable(t);
         List<String> listFields = ObjectService.getFieldsWithoutPk(t);
 
-        String fields = String.join(",", listFields);
+        String fields = String.join(DELIMITER, listFields);
 
         String values = listFields.stream()
-                .map(s -> DataQuery.CHAR_QUESTION)
-                .collect(Collectors.joining(","));
+                .map(s -> CHAR_QUESTION)
+                .collect(Collectors.joining(DELIMITER));
 
         return String.format(INSERT_QUERY, nameTable, fields, values);
     }
@@ -86,8 +56,8 @@ public final class DataQuery {
         String fields = String.join(DELIMITER, listFields);
 
         String values = listFields.stream()
-                .map(s -> DataQuery.CHAR_QUESTION)
-                .collect(Collectors.joining(","));
+                .map(s -> CHAR_QUESTION)
+                .collect(Collectors.joining(DELIMITER));
 
         return String.format(SELECT_QUERY, nameTable, fields, values);
     }
@@ -104,7 +74,8 @@ public final class DataQuery {
         List<String> idFields = ObjectService.getPkField(t);
 
         String fields = String.join(DELIMITER_UPD, listFields) + DELIM_UPD_END;
-        String idField = idFields.get(0);
+        String idField =idFields.listIterator().next();
+//        String idField = idFields.get(0);
         return String.format(UPDATE_QUERY, nameTable, fields, idField);
     }
 

@@ -172,7 +172,7 @@ final class DaoTest {
     @MethodSource("providePeopleForTestDelete")
     @Order(4)
     void testDelete(final Person person) throws SQLException {
-        daoServicePerson.delete(person);
+        daoServicePerson.deleteById(person);
         assertNull(selectById(person.getId(), connection));
     }
 

@@ -34,5 +34,11 @@ public interface IDAOPerson extends IDAO<Person> {
      *
      * @param person тип сущности.
      */
-    void findPerson(Person person);
+    void findPersonById(Person person);
+
+    /**
+     * поиск всех сущностей в базе данных по id объекта класса Person.
+     *
+     */
+    void findAllPerson();
 }

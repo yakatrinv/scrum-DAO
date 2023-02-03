@@ -97,6 +97,11 @@ public class DAOService<T> implements IDAO<T> {
         }
     }
 
+    @Override
+    public void selectAll() {
+
+    }
+
     /**
      * @param t сущность, которая обновляется в базе данных, ищем по по id
      * @since 1.0
@@ -119,7 +124,7 @@ public class DAOService<T> implements IDAO<T> {
      * @since 1.0
      */
     @Override
-    public void delete(final T t) {
+    public void deleteById(final T t) {
         String query = DataQuery.getDeleteQuery(t);
 
         statement = JDBCConnection.initStatement(query,
