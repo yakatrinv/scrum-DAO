@@ -16,7 +16,8 @@ public final class DataProperties {
     /**
      * перечень свойств данных для подключения.
      */
-    private static final ResourceBundle PROPERTIES = ResourceBundle.getBundle(BASE_NAME);
+    private static final ResourceBundle PROPERTIES =
+            ResourceBundle.getBundle(BASE_NAME);
     /**
      * получение данных url из перечня свойств.
      */

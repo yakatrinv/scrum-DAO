@@ -21,8 +21,9 @@ public interface IDAO<T> {
 
     /**
      *  поиск всех сущностей в базе данных.
+     * @param t класс.
      */
-    void selectAll(String nameTable);
+    void selectAll(Class<T> t);
 
     /**
      * @param t объект сущности.

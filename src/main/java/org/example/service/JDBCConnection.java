@@ -1,6 +1,7 @@
-package org.example.dataSource;
+package org.example.service;
 
-import org.example.service.DAOService;
+import org.example.dao.DAOService;
+import org.example.dataSource.ObjectService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -28,6 +29,11 @@ public final class JDBCConnection {
      */
     public static final int FIRST_INDEX = 1;
     /**
+     * tabulation.
+     */
+    public static final String CHAR_TAB = "\t";
+
+    /**
      * private constructor.
      */
     private JDBCConnection() {
@@ -35,12 +41,13 @@ public final class JDBCConnection {
 
     /**
      * initialisation current connection.
+     *
      * @return 'connection'
      */
     public static Connection initConnection() {
         Connection connection = null;
         try {
-            connection =DriverManager.getConnection(URL, USER, PASS);
+            connection = DriverManager.getConnection(URL, USER, PASS);
             if (connection != null) {
                 connection.setAutoCommit(false);
             }
@@ -51,9 +58,9 @@ public final class JDBCConnection {
     }
 
     /**
-     * @param query SQL query for inintialisation
-     * @param pKey  true - return genereted key, false - not return
-     *              initialisation statements in current connection.
+     * @param query      SQL query for inintialisation
+     * @param pKey       true - return genereted key, false - not return
+     *                   initialisation statements in current connection.
      * @param connection current connection
      * @return 'statement'
      */
@@ -78,7 +85,8 @@ public final class JDBCConnection {
 
     /**
      * фиксирует  транзакцию.
-     * @param statement current statement
+     *
+     * @param statement  current statement
      * @param connection current connection
      */
     public static void commit(final Connection connection,
@@ -99,8 +107,8 @@ public final class JDBCConnection {
     /**
      * выполняет запрос из prepared statement.
      *
-     * @return результат выполнения запроса
      * @param statement current statement
+     * @return результат выполнения запроса
      */
     public static ResultSet execute(final PreparedStatement statement) {
         try {
@@ -113,8 +121,9 @@ public final class JDBCConnection {
 
     /**
      * закрывает открытые соединения.
+     *
      * @param daoService DAO
-     * @param <T> тип сущности
+     * @param <T>        тип сущности
      */
     public static <T> void closeConnection(final DAOService<T> daoService) {
         try {
@@ -131,9 +140,10 @@ public final class JDBCConnection {
 
     /**
      * Устанавлиавает перечень значений в prepared statement.
-     * @param values список значений для установки в prepared statement
-     * @param <T>    тип сущности
-     * @param statement  current statement
+     *
+     * @param values    список значений для установки в prepared statement
+     * @param <T>       тип сущности
+     * @param statement current statement
      */
     public static <T> void setValues(final List<T> values,
                                      final PreparedStatement statement) {
@@ -147,11 +157,11 @@ public final class JDBCConnection {
     /**
      * устанавливает значение в prepared statement по индексу.
      *
-     * @param index индекс, в который вносится значение в запрос,
-     *              который установлен в prepared statement
-     * @param value значение, котороевносится значение в запрос,
-     *              который установлен в prepared statement
-     * @param <T>   тип сущности
+     * @param index     индекс, в который вносится значение в запрос,
+     *                  который установлен в prepared statement
+     * @param value     значение, котороевносится значение в запрос,
+     *                  который установлен в prepared statement
+     * @param <T>       тип сущности
      * @param statement current statement
      */
     private static <T> void setValue(final int index,
@@ -183,8 +193,8 @@ public final class JDBCConnection {
     /**
      * устанавливает id в указанный объект класса.
      *
-     * @param t   объект сущности
-     * @param <T> тип сущности
+     * @param t         объект сущности
+     * @param <T>       тип сущности
      * @param statement current statement
      */
     public static <T> void setId(final T t, final PreparedStatement statement) {
@@ -208,13 +218,33 @@ public final class JDBCConnection {
      *            перечень полей получается из данных об объекте.
      */
     public static <T> void printResult(final ResultSet rs, final T t) {
-        List<String> fields = ObjectService.getFieldsWithoutPk(t);
+        print(rs, t.getClass());
+    }
+
+    /**
+     * @param rs полученные результаты запроса
+     * @param t  данные объекта класса
+     *           Вывод на печать данных о полученном результате
+     *           перечень полей получается из данных об объекте.
+     */
+    public static void printClassResult(final ResultSet rs, final Class<?> t) {
+        print(rs, t);
+    }
+
+    /**
+     * @param rs полученные результаты запроса
+     * @param t  данные объекта класса
+     *           Вывод на печать данных о полученном результате
+     *           перечень полей получается из данных об объекте.
+     */
+    private static void print(final ResultSet rs, final Class<?> t) {
+        List<String> fields = ObjectService.getAllFields(t);
         try {
             while (rs.next()) {
                 System.out.println();
                 for (String field : fields) {
                     String nameColumn = rs.getString(field);
-                    System.out.print(nameColumn + "\t");
+                    System.out.print(nameColumn + CHAR_TAB);
                 }
             }
         } catch (SQLException e) {

@@ -1,8 +1,7 @@
-package org.example.service;
+package org.example.dao;
 
-import org.example.dao.IDAO;
-import org.example.dataSource.JDBCConnection;
-import org.example.dataSource.DataQuery;
+import org.example.service.JDBCConnection;
+import org.example.service.DataQuery;
 import org.example.dataSource.ObjectService;
 
 import java.sql.Connection;
@@ -35,6 +34,7 @@ public class DAOService<T> implements IDAO<T> {
 
     /**
      * set Connection.
+     *
      * @param connect current connection
      */
     public void setConnection(final Connection connect) {
@@ -43,6 +43,7 @@ public class DAOService<T> implements IDAO<T> {
 
     /**
      * Get Connection.
+     *
      * @return connection
      */
     public Connection getConnection() {
@@ -51,6 +52,7 @@ public class DAOService<T> implements IDAO<T> {
 
     /**
      * get Statement.
+     *
      * @return statement
      */
     public PreparedStatement getStatement() {
@@ -101,16 +103,17 @@ public class DAOService<T> implements IDAO<T> {
      * @since 1.0
      */
     @Override
-    public void selectAll(final String nameTable) {
-        String query = DataQuery.getSelectAllQuery(nameTable);
+    public void selectAll(final Class<T> t) {
+
+        String query = DataQuery.getSelectAllQuery(t);
 
         statement = JDBCConnection.initStatement(query,
                 NOT_RETURN_PRIMARY_KEY,
                 connection);
         ResultSet rs = JDBCConnection.execute(statement);
-//        if (rs != null) {
-//            JDBCConnection.printResult(rs, t);
-//        }
+        if (rs != null) {
+            JDBCConnection.printClassResult(rs, t);
+        }
     }
 
     /**

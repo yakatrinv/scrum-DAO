@@ -3,7 +3,7 @@ package org.example.entity;
 /**
  * Утилитный класс для хранения констатнт.
  */
-public class Util {
+public final class Util {
     /**
      * путь к базе данных.
      */
@@ -66,4 +66,10 @@ public class Util {
      * delimiter for columns in update query in the end.
      */
     public static final String DELIM_UPD_END = " = ?";
+
+    /**
+     * default constructor.
+     */
+    private Util() {
+    }
 }

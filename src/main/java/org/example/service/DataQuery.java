@@ -1,4 +1,6 @@
-package org.example.dataSource;
+package org.example.service;
+
+import org.example.dataSource.ObjectService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +34,7 @@ public final class DataQuery {
      * на добавдение записи в базе данных.
      */
     public static <T> String getInsertQuery(final T t) {
-        String nameTable = ObjectService.getNameTable(t);
+        String nameTable = ObjectService.getNameTable(t.getClass());
         List<String> listFields = ObjectService.getFieldsWithoutPk(t);
 
         String fields = String.join(DELIMITER, listFields);
@@ -51,7 +53,7 @@ public final class DataQuery {
      * на поиск записи в базе данных.
      */
     public static <T> String getSelectQuery(final T t) {
-        String nameTable = ObjectService.getNameTable(t);
+        String nameTable = ObjectService.getNameTable(t.getClass());
         List<String> listFields = ObjectService.getPkField(t);
 
         String fields = String.join(DELIMITER, listFields);
@@ -65,11 +67,13 @@ public final class DataQuery {
 
     /**
      * @param <T> тип сущности
+     * @param tClass тип типа class.
      * @return возвращает строку с SQL запросом
      * на поиск записи в базе данных.
      */
-    public static <T> String getSelectAllQuery(final String nameTable) {
-        return String.format(SELECT_ALL_QUERY, nameTable);
+    public static <T> String getSelectAllQuery(final Class<T> tClass) {
+        return String.format(SELECT_ALL_QUERY,
+                ObjectService.getNameTable(tClass));
     }
 
     /**
@@ -79,13 +83,12 @@ public final class DataQuery {
      * на обновление записи в базе данных.
      */
     public static <T> String getUpdateQuery(final T t) {
-        String nameTable = ObjectService.getNameTable(t);
+        String nameTable = ObjectService.getNameTable(t.getClass());
         List<String> listFields = ObjectService.getFieldsWithoutPk(t);
         List<String> idFields = ObjectService.getPkField(t);
 
         String fields = String.join(DELIMITER_UPD, listFields) + DELIM_UPD_END;
-        String idField =idFields.listIterator().next();
-//        String idField = idFields.get(0);
+        String idField = idFields.listIterator().next();
         return String.format(UPDATE_QUERY, nameTable, fields, idField);
     }
 
@@ -96,7 +99,7 @@ public final class DataQuery {
      * на удаление записи в базе данных.
      */
     public static <T> String getDeleteQuery(final T t) {
-        String nameTable = ObjectService.getNameTable(t);
+        String nameTable = ObjectService.getNameTable(t.getClass());
         List<String> listFields = ObjectService.getPkField(t);
 
         String fields = String.join(DELIMITER, listFields);

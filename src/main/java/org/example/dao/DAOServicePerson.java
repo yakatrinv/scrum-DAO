@@ -1,6 +1,5 @@
-package org.example.service;
+package org.example.dao;
 
-import org.example.dao.IDAOPerson;
 import org.example.entity.Person;
 
 /**
@@ -43,7 +42,7 @@ public class DAOServicePerson extends DAOService<Person> implements IDAOPerson {
      * поиск всех сущностей в базе данных по id объекта класса Person.
      */
     @Override
-    public void findAllPerson(final String nameTable) {
-        this.selectAll(nameTable);
+    public void findAllPerson(final Class<Person> personClass) {
+        this.selectAll(personClass);
     }
 }

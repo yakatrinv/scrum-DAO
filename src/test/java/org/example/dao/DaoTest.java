@@ -1,8 +1,6 @@
 package org.example.dao;
 
 import org.example.entity.Person;
-import org.example.service.DAOService;
-import org.example.service.DAOServicePerson;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
