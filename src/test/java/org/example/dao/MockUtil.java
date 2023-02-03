@@ -1,6 +1,6 @@
 package org.example.dao;
 
-import org.example.Person;
+import org.example.entity.Person;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

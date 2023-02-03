@@ -1,6 +1,6 @@
-package org.example.impl;
+package org.example.dao;
 
-import org.example.Person;
+import org.example.entity.Person;
 
 /**
  * @author Katerina

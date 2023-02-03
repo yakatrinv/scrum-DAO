@@ -1,12 +1,14 @@
-package org.example;
+package org.example.service;
 
-import org.example.impl.IDAOPerson;
+import org.example.dao.IDAOPerson;
+import org.example.entity.Person;
+
 /**
  * @author Katerina
  * @version 1.0
  * имплементация DAO для класса Person.
  */
-public class DAOPerson extends DAO<Person> implements IDAOPerson {
+public class DAOServicePerson extends DAOService<Person> implements IDAOPerson {
     /**
      * добавление элземплара класса Person в базу данных.
      */
@@ -34,6 +36,6 @@ public class DAOPerson extends DAO<Person> implements IDAOPerson {
      */
     @Override
     public void findPerson(final Person person) {
-        this.select(person);
+        this.selectById(person);
     }
 }

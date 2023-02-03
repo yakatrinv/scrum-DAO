@@ -1,6 +1,7 @@
-package org.example.service;
+package org.example.dataSource;
 
-import org.example.DAO;
+import org.example.entity.DataProperties;
+import org.example.service.DAOService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * class for work with connection jbdc.
  */
-public final class ConnectionDB {
+public final class JDBCConnection {
     /**
      * return generate key after query.
      */
@@ -25,7 +26,7 @@ public final class ConnectionDB {
     /**
      * private constructor.
      */
-    private ConnectionDB() {
+    private JDBCConnection() {
     }
 
     /**
@@ -108,16 +109,16 @@ public final class ConnectionDB {
 
     /**
      * закрывает открытые соединения.
-     * @param dao DAO
+     * @param daoService DAO
      * @param <T> тип сущности
      */
-    public static <T> void closeConnection(final DAO<T> dao) {
+    public static <T> void closeConnection(final DAOService<T> daoService) {
         try {
-            if (dao.getStatement() != null) {
-                dao.getStatement().close();
+            if (daoService.getStatement() != null) {
+                daoService.getStatement().close();
             }
-            if (dao.getConnection() != null) {
-                dao.getConnection().close();
+            if (daoService.getConnection() != null) {
+                daoService.getConnection().close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,9 +1,9 @@
-package org.example;
+package org.example.service;
 
-import org.example.impl.IDAO;
-import org.example.service.ConnectionDB;
-import org.example.service.DataQuery;
-import org.example.service.ObjectService;
+import org.example.dao.IDAO;
+import org.example.dataSource.JDBCConnection;
+import org.example.dataSource.DataQuery;
+import org.example.dataSource.ObjectService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +14,7 @@ import java.sql.ResultSet;
  * @author Katerina
  * @version 1.0
  */
-public class DAO<T> implements IDAO<T> {
+public class DAOService<T> implements IDAO<T> {
     /**
      * константа указывает на необходимость получения primary key
      * возвращается после его генерации при выполнении запроса.
@@ -67,14 +67,14 @@ public class DAO<T> implements IDAO<T> {
     public void insert(final T t) {
         String query = DataQuery.getInsertQuery(t);
 
-        statement = ConnectionDB.initStatement(query,
+        statement = JDBCConnection.initStatement(query,
                 RETURN_PRIMARY_KEY,
                 connection);
-        ConnectionDB.setValues(ObjectService.getValuesWithoutPk(t),
+        JDBCConnection.setValues(ObjectService.getValuesWithoutPk(t),
                 statement);
-        ConnectionDB.commit(connection,
+        JDBCConnection.commit(connection,
                 statement);
-        ConnectionDB.setId(t,
+        JDBCConnection.setId(t,
                 statement);
     }
 
@@ -83,17 +83,17 @@ public class DAO<T> implements IDAO<T> {
      * @since 1.0
      */
     @Override
-    public void select(final T t) {
+    public void selectById(final T t) {
         String query = DataQuery.getSelectQuery(t);
 
-        statement = ConnectionDB.initStatement(query,
+        statement = JDBCConnection.initStatement(query,
                 NOT_RETURN_PRIMARY_KEY,
                 connection);
-        ConnectionDB.setValues(ObjectService.getValuesPk(t),
+        JDBCConnection.setValues(ObjectService.getValuesPk(t),
                 statement);
-        ResultSet rs = ConnectionDB.execute(statement);
+        ResultSet rs = JDBCConnection.execute(statement);
         if (rs != null) {
-            ConnectionDB.printResult(rs, t);
+            JDBCConnection.printResult(rs, t);
         }
     }
 
@@ -105,12 +105,12 @@ public class DAO<T> implements IDAO<T> {
     public void update(final T t) {
         String query = DataQuery.getUpdateQuery(t);
 
-        statement = ConnectionDB.initStatement(query,
+        statement = JDBCConnection.initStatement(query,
                 NOT_RETURN_PRIMARY_KEY,
                 connection);
-        ConnectionDB.setValues(ObjectService.getValuesWithPk(t),
+        JDBCConnection.setValues(ObjectService.getValuesWithPk(t),
                 statement);
-        ConnectionDB.commit(connection,
+        JDBCConnection.commit(connection,
                 statement);
     }
 
@@ -122,12 +122,12 @@ public class DAO<T> implements IDAO<T> {
     public void delete(final T t) {
         String query = DataQuery.getDeleteQuery(t);
 
-        statement = ConnectionDB.initStatement(query,
+        statement = JDBCConnection.initStatement(query,
                 NOT_RETURN_PRIMARY_KEY,
                 connection);
-        ConnectionDB.setValues(ObjectService.getValuesPk(t),
+        JDBCConnection.setValues(ObjectService.getValuesPk(t),
                 statement);
-        ConnectionDB.commit(connection,
+        JDBCConnection.commit(connection,
                 statement);
     }
 }

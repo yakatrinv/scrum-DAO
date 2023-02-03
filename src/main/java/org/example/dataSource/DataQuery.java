@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.dataSource;
 
 import java.util.List;
 import java.util.stream.Collectors;

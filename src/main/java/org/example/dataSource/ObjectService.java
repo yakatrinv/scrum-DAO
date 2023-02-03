@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.dataSource;
 
 import org.example.anno.MyColumn;
 import org.example.anno.MyTable;

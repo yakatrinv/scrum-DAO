@@ -1,8 +1,8 @@
 package org.example.dao;
 
-import org.example.DAO;
-import org.example.DAOPerson;
-import org.example.Person;
+import org.example.entity.Person;
+import org.example.service.DAOService;
+import org.example.service.DAOServicePerson;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,15 +34,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 final class DaoTest {
     private static Connection connection;
-    private static DAO<Person> daoPerson;
+    private static DAOService<Person> daoServicePerson;
     private static ByteArrayOutputStream out;
 
     @BeforeAll
     static void createPersonData() throws SQLException {
         connection = getConnection();
         connection.setAutoCommit(false);
-        daoPerson = new DAOPerson();
-        daoPerson.setConnection(connection);
+        daoServicePerson = new DAOServicePerson();
+        daoServicePerson.setConnection(connection);
         try (Statement statement = connection.createStatement()) {
             statement.execute(CREATE_PERSON_TABLE_SQL);
             connection.commit();
@@ -145,7 +145,7 @@ final class DaoTest {
     @MethodSource("providePeopleForTestInsert")
     @Order(1)
     void testInsert(final Person person) throws SQLException {
-        daoPerson.insert(person);
+        daoServicePerson.insert(person);
         assertEquals(person, selectById(person.getId(), connection));
     }
 
@@ -153,7 +153,7 @@ final class DaoTest {
     @MethodSource("providePeopleForTestSelect")
     @Order(2)
     void testSelect(final Person person, final String printedPerson) {
-        daoPerson.select(person);
+        daoServicePerson.selectById(person);
         assertEquals(printedPerson, out.toString());
     }
 
@@ -164,7 +164,7 @@ final class DaoTest {
             throws SQLException {
         person.setName(person.getName().toUpperCase());
         person.setSurname(person.getSurname().toUpperCase());
-        daoPerson.update(updatedPerson);
+        daoServicePerson.update(updatedPerson);
         assertEquals(person, selectById(person.getId(), connection));
     }
 
@@ -172,7 +172,7 @@ final class DaoTest {
     @MethodSource("providePeopleForTestDelete")
     @Order(4)
     void testDelete(final Person person) throws SQLException {
-        daoPerson.delete(person);
+        daoServicePerson.delete(person);
         assertNull(selectById(person.getId(), connection));
     }
 

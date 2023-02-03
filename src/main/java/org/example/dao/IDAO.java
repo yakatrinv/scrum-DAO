@@ -1,4 +1,4 @@
-package org.example.impl;
+package org.example.dao;
 
 /**
  * @param <T> тип сущности.
@@ -17,7 +17,12 @@ public interface IDAO<T> {
      * @param t объект сущности.
      *          поиск сущности в базе данных.
      */
-    void select(T t);
+    void selectById(T t);
+
+    /**
+     *  поиск всех сущностей в базе данных.
+     */
+    void selectAll();
 
     /**
      * @param t объект сущности.

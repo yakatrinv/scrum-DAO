@@ -1,6 +1,9 @@
 package org.example;
 
-import org.example.service.ConnectionDB;
+import org.example.service.DAOServicePerson;
+import org.example.entity.Person;
+import org.example.dataSource.JDBCConnection;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,15 +54,14 @@ public final class App {
      */
     private App() {
     }
-
     /**
      * @param args
      * method for running project.
      */
     public static void main(final String[] args) {
         List<Person> personList = fillPersonList();
-        DAOPerson daoPerson = new DAOPerson();
-        daoPerson.setConnection(ConnectionDB.initConnection());
+        DAOServicePerson daoPerson = new DAOServicePerson();
+        daoPerson.setConnection(JDBCConnection.initConnection());
 
         for (Person person : personList) {
             daoPerson.createPerson(person);
@@ -71,7 +73,7 @@ public final class App {
         daoPerson.updatePerson(personList.get(ONE));
         daoPerson.deletePerson(personList.get(ZERO));
 
-        ConnectionDB.closeConnection(daoPerson);
+        JDBCConnection.closeConnection(daoPerson);
     }
 
     /**

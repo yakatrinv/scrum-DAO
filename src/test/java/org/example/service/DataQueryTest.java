@@ -1,6 +1,7 @@
 package org.example.service;
 
-import org.example.Person;
+import org.example.dataSource.DataQuery;
+import org.example.entity.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
