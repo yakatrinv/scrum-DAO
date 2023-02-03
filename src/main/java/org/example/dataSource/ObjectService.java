@@ -47,6 +47,8 @@ public final class ObjectService {
      * полей с аннотацией PrimaryKey.
      */
     public static final boolean NO_ADD_PK = false;
+    public static final boolean ACCEPT_WRITE = true;
+    public static final boolean DECLINE_WRITE = false;
 
     /**
      * конструктор по умолчанию.
@@ -82,15 +84,15 @@ public final class ObjectService {
         for (Field field : fieldsArray) {
             if (addFields && field.isAnnotationPresent(ANNO_MY_COLUMN)
                     && !field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
-                field.setAccessible(true);
+                field.setAccessible(ACCEPT_WRITE);
                 resultList.add(field.getAnnotation(ANNO_MY_COLUMN).name());
-                field.setAccessible(false);
+                field.setAccessible(DECLINE_WRITE);
             }
 
             if (addPk && field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
-                field.setAccessible(true);
+                field.setAccessible(ACCEPT_WRITE);
                 fieldPk = field;
-                field.setAccessible(false);
+                field.setAccessible(DECLINE_WRITE);
             }
         }
 
@@ -140,23 +142,23 @@ public final class ObjectService {
         for (Field field : fieldsArray) {
             if (addFields && field.isAnnotationPresent(ANNO_MY_COLUMN)
                     && !field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
-                field.setAccessible(true);
+                field.setAccessible(ACCEPT_WRITE);
                 try {
                     resultList.add(field.get(t));
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
-                field.setAccessible(false);
+                field.setAccessible(DECLINE_WRITE);
             }
 
             if (addPk && field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
-                field.setAccessible(true);
+                field.setAccessible(ACCEPT_WRITE);
                 try {
                     fieldPk = field.get(t);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
-                field.setAccessible(false);
+                field.setAccessible(DECLINE_WRITE);
             }
         }
 
@@ -210,9 +212,9 @@ public final class ObjectService {
         for (Field field : fields) {
             if (field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
                 try {
-                    field.setAccessible(true);
+                    field.setAccessible(ACCEPT_WRITE);
                     field.set(t, value);
-                    field.setAccessible(false);
+                    field.setAccessible(DECLINE_WRITE);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

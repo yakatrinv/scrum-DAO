@@ -23,7 +23,6 @@ public class Person {
      * id человека.
      */
     @PrimaryKey(name = "id")
-    @MyColumn(name = "id")
     private int id;
     /**
      * имя персоны.

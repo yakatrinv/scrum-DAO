@@ -43,7 +43,7 @@ public class DAOServicePerson extends DAOService<Person> implements IDAOPerson {
      * поиск всех сущностей в базе данных по id объекта класса Person.
      */
     @Override
-    public void findAllPerson() {
-        this.selectAll();
+    public void findAllPerson(final String nameTable) {
+        this.selectAll(nameTable);
     }
 }

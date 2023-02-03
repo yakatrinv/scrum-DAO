@@ -7,6 +7,7 @@ import org.example.dataSource.JDBCConnection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Application DAO.
@@ -15,40 +16,19 @@ public final class App {
     /**
      * name for testing.
      */
-    public static final String MIKE = "Mike";
+    public static final String[] NAMES = {"Mike","John","Federico"};
     /**
      * surname for testing.
      */
-    public static final String ANDERSON = "Anderson";
+    public static final String[] SURNAMES = {"Anderson","Parson","Clinton"};
     /**
-     * name for testing.
+     * random.
      */
-    public static final String JOHN = "John";
-    /**
-     * surname for testing.
-     */
-    public static final String PARSON = "Parson";
-    /**
-     * name for testing.
-     */
-    public static final String FEDERICO = "Federico";
-    /**
-     * surname for testing.
-     */
-    public static final String CLINTON = "Clinton";
+    public static Random RANDOM = new Random();
     /**
      * new name for testing.
      */
-    public static final String NEW_NAME = "new name";
-    /**
-     * index for testing.
-     */
-    public static final int ONE = 1;
-    /**
-     * index for testing.
-     */
-    public static final int ZERO = 0;
-
+    public static final String ADD_FOR_UPDATE = " update";
     /**
      * constructor.
      */
@@ -69,9 +49,13 @@ public final class App {
         for (Person person : personList) {
             daoPerson.findPersonById(person);
         }
-        personList.get(ONE).setName(NEW_NAME);
-        daoPerson.updatePerson(personList.get(ONE));
-        daoPerson.deletePerson(personList.get(ZERO));
+
+        Person person = personList.listIterator().next();
+        person.setName(person.getName()+ADD_FOR_UPDATE);
+        person.setSurname(person.getSurname()+ADD_FOR_UPDATE);
+        daoPerson.updatePerson(person);
+
+        daoPerson.deletePerson(personList.get(personList.size()-1));
 
         JDBCConnection.closeConnection(daoPerson);
     }
@@ -83,14 +67,21 @@ public final class App {
     public static List<Person> fillPersonList() {
         List<Person> personList = new ArrayList<>();
         personList.add(Person.builder()
-                .name(MIKE)
-                .surname(ANDERSON).build());
+                .name(getName())
+                .surname(getSurname()).build());
         personList.add(Person.builder()
-                .name(JOHN)
-                .surname(PARSON).build());
+                .name(getName())
+                .surname(getSurname()).build());
         personList.add(Person.builder()
-                .name(FEDERICO)
-                .surname(CLINTON).build());
+                .name(getName())
+                .surname(getSurname()).build());
         return personList;
+    }
+
+    private static String getName() {
+        return NAMES[RANDOM.nextInt(NAMES.length)];
+    }
+    private static String getSurname() {
+        return SURNAMES[RANDOM.nextInt(SURNAMES.length)];
     }
 }

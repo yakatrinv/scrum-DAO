@@ -97,9 +97,20 @@ public class DAOService<T> implements IDAO<T> {
         }
     }
 
+    /**
+     * @since 1.0
+     */
     @Override
-    public void selectAll() {
+    public void selectAll(final String nameTable) {
+        String query = DataQuery.getSelectAllQuery(nameTable);
 
+        statement = JDBCConnection.initStatement(query,
+                NOT_RETURN_PRIMARY_KEY,
+                connection);
+        ResultSet rs = JDBCConnection.execute(statement);
+//        if (rs != null) {
+//            JDBCConnection.printResult(rs, t);
+//        }
     }
 
     /**

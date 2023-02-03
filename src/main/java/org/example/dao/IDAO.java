@@ -22,7 +22,7 @@ public interface IDAO<T> {
     /**
      *  поиск всех сущностей в базе данных.
      */
-    void selectAll();
+    void selectAll(String nameTable);
 
     /**
      * @param t объект сущности.

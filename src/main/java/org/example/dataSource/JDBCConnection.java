@@ -1,14 +1,18 @@
 package org.example.dataSource;
 
-import org.example.entity.DataProperties;
 import org.example.service.DAOService;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.List;
+
+import static org.example.entity.DataProperties.PASS;
+import static org.example.entity.DataProperties.URL;
+import static org.example.entity.DataProperties.USER;
 
 /**
  * class for work with connection jbdc.
@@ -18,11 +22,11 @@ public final class JDBCConnection {
      * return generate key after query.
      */
     public static final int RETURN_KEY = Statement.RETURN_GENERATED_KEYS;
+
     /**
      * first index for set value in prepared statement.
      */
     public static final int FIRST_INDEX = 1;
-
     /**
      * private constructor.
      */
@@ -36,7 +40,7 @@ public final class JDBCConnection {
     public static Connection initConnection() {
         Connection connection = null;
         try {
-            connection = DataProperties.getConnection();
+            connection =DriverManager.getConnection(URL, USER, PASS);
             if (connection != null) {
                 connection.setAutoCommit(false);
             }

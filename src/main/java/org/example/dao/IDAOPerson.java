@@ -40,5 +40,5 @@ public interface IDAOPerson extends IDAO<Person> {
      * поиск всех сущностей в базе данных по id объекта класса Person.
      *
      */
-    void findAllPerson();
+    void findAllPerson(String nameTable);
 }

@@ -9,6 +9,7 @@ import static org.example.entity.Util.DELIMITER;
 import static org.example.entity.Util.DELIMITER_UPD;
 import static org.example.entity.Util.DELIM_UPD_END;
 import static org.example.entity.Util.INSERT_QUERY;
+import static org.example.entity.Util.SELECT_ALL_QUERY;
 import static org.example.entity.Util.SELECT_QUERY;
 import static org.example.entity.Util.UPDATE_QUERY;
 
@@ -60,6 +61,15 @@ public final class DataQuery {
                 .collect(Collectors.joining(DELIMITER));
 
         return String.format(SELECT_QUERY, nameTable, fields, values);
+    }
+
+    /**
+     * @param <T> тип сущности
+     * @return возвращает строку с SQL запросом
+     * на поиск записи в базе данных.
+     */
+    public static <T> String getSelectAllQuery(final String nameTable) {
+        return String.format(SELECT_ALL_QUERY, nameTable);
     }
 
     /**
