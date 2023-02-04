@@ -1,5 +1,8 @@
 package org.example.entity;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static org.example.entity.Util.BASE_NAME;
@@ -36,5 +39,16 @@ public final class DataProperties {
      * конструктор по умолчанию.
      */
     private DataProperties() {
+    }
+    /**
+     * @return Возвращает соединение по данным базы данных.
+     */
+    public static Connection getConnection() {
+        try {
+            return DriverManager.getConnection(URL, USER, PASS);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

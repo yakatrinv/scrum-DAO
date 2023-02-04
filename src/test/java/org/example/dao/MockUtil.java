@@ -38,6 +38,14 @@ public final class MockUtil {
         }
     }
 
+    public static Person createInsertPerson() {
+        return Person.builder()
+                .id(1)
+                .name("Conrad")
+                .surname("Potter")
+                .build();
+    }
+
     private static Person createPerson(final ResultSet resultset)
             throws SQLException {
         Person person = new Person();

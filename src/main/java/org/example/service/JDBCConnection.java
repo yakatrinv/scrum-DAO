@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.dao.DAOService;
 import org.example.dataSource.ObjectService;
+import org.example.entity.DataProperties;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -47,7 +48,7 @@ public final class JDBCConnection {
     public static Connection initConnection() {
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(URL, USER, PASS);
+            connection = DataProperties.getConnection();
             if (connection != null) {
                 connection.setAutoCommit(false);
             }
