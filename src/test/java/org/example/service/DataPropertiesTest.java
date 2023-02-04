@@ -1,7 +1,6 @@
 package org.example.service;
 
 
-import org.example.entity.DataProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

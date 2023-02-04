@@ -2,7 +2,6 @@ package org.example.service;
 
 import org.example.dao.DAOService;
 import org.example.dataSource.ObjectService;
-import org.example.entity.DataProperties;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,6 +23,7 @@ public final class JDBCConnection {
      * first index for set value in prepared statement.
      */
     public static final int FIRST_INDEX = 1;
+
     /**
      * private constructor.
      */
@@ -159,17 +159,14 @@ public final class JDBCConnection {
                                      final T value,
                                      final PreparedStatement statement) {
         try {
-            if (value.getClass().equals(Byte.class)) {
-                statement.setByte(index, (byte) value);
-            } else if (value.getClass().equals(Short.class)) {
-                statement.setShort(index, (short) value);
-            } else if (value.getClass().equals(Integer.class)) {
+            if (value.getClass().equals(Byte.class)
+                    || value.getClass().equals(Short.class)
+                    || value.getClass().equals(Integer.class)) {
                 statement.setInt(index, (int) value);
             } else if (value.getClass().equals(Long.class)) {
                 statement.setLong(index, (long) value);
-            } else if (value.getClass().equals(Float.class)) {
-                statement.setFloat(index, (float) value);
-            } else if (value.getClass().equals(Double.class)) {
+            } else if (value.getClass().equals(Float.class)
+                    || value.getClass().equals(Double.class)) {
                 statement.setDouble(index, (double) value);
             } else if (value.getClass().equals(Boolean.class)) {
                 statement.setBoolean(index, (boolean) value);
@@ -199,7 +196,6 @@ public final class JDBCConnection {
             e.printStackTrace();
         }
     }
-
 
 
 }
