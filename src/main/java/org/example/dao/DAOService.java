@@ -7,6 +7,8 @@ import org.example.dataSource.ObjectService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @param <T>
@@ -85,7 +87,8 @@ public class DAOService<T> implements IDAO<T> {
      * @since 1.0
      */
     @Override
-    public void selectById(final T t) {
+    public Object selectById(final T t) {
+        Object object = null;
         String query = DataQuery.getSelectQuery(t);
 
         statement = JDBCConnection.initStatement(query,
@@ -95,16 +98,18 @@ public class DAOService<T> implements IDAO<T> {
                 statement);
         ResultSet rs = JDBCConnection.execute(statement);
         if (rs != null) {
-            JDBCConnection.printResult(rs, t);
+
+            object = ObjectService.getResult(rs, t.getClass());
         }
+        return object;
     }
 
     /**
      * @since 1.0
      */
     @Override
-    public void selectAll(final Class<T> t) {
-
+    public List<Object> selectAll(final Class<?> t) {
+        List<Object> objectList = new ArrayList<>();
         String query = DataQuery.getSelectAllQuery(t);
 
         statement = JDBCConnection.initStatement(query,
@@ -112,8 +117,9 @@ public class DAOService<T> implements IDAO<T> {
                 connection);
         ResultSet rs = JDBCConnection.execute(statement);
         if (rs != null) {
-            JDBCConnection.printClassResult(rs, t);
+            objectList = ObjectService.getResultList(rs, t);
         }
+        return objectList;
     }
 
     /**

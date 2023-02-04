@@ -5,6 +5,9 @@ import org.example.anno.MyTable;
 import org.example.anno.PrimaryKey;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,10 +82,10 @@ public final class ObjectService {
     /**
      * Получает перечень полей объекта с учетом указателей.
      *
-     * @param aClass    экземпляр класс
+     * @param aClass    класс
      * @param addFields указатель добавления полей с аннотацией MyColumn
      * @param addPk     указатель добавления полей с аннотацией PrimaryKey
-     * @param index null, в конец списка, index - на указанную позицию
+     * @param index     null, в конец списка, index - на указанную позицию
      * @return list строк имен полей
      */
     public static List<String> getFields(final Class<?> aClass,
@@ -127,7 +130,7 @@ public final class ObjectService {
      * @return list строк имен полей
      */
     public static List<String> getAllFields(final Class<?> t) {
-        return getFields(t, ADD_FIELDS, NO_ADD_PK, FIRST_INDEX);
+        return getFields(t, ADD_FIELDS, ADD_PK, FIRST_INDEX);
     }
 
     /**
@@ -136,8 +139,8 @@ public final class ObjectService {
      * @param t экземпляр класс
      * @return list строк имен полей
      */
-    public static List<String> getFieldsWithoutPk(final Object t) {
-        return getFields(t.getClass(), ADD_FIELDS, NO_ADD_PK, null);
+    public static List<String> getFieldsWithoutPk(final Class<?> t) {
+        return getFields(t, ADD_FIELDS, NO_ADD_PK, null);
     }
 
     /**
@@ -146,8 +149,8 @@ public final class ObjectService {
      * @param t экземпляр класс
      * @return list строк имен полей
      */
-    public static List<String> getPkField(final Object t) {
-        return getFields(t.getClass(), NO_ADD_FIELDS, ADD_PK, null);
+    public static List<String> getPkField(final Class<?> t) {
+        return getFields(t, NO_ADD_FIELDS, ADD_PK, null);
     }
 
     /**
@@ -249,4 +252,68 @@ public final class ObjectService {
             }
         }
     }
+
+    /**
+     * @param rs полученные результаты запроса
+     * @param t  данные объекта класса
+     * @return selected person
+     * Вывод на печать данных о полученном результате
+     * перечень полей получается из данных об объекте.
+     */
+    public static Object getResult(final ResultSet rs, final Class<?> t) {
+        Object object = null;
+        List<String> fields = ObjectService.getAllFields(t);
+        try {
+            if (rs.next()) {
+                object = t.getDeclaredConstructor().newInstance();
+
+                for (String nameColumn : fields) {
+                    Object value = rs.getObject(nameColumn);
+                    Field fieldObject = t.getDeclaredField(nameColumn);
+                    fieldObject.setAccessible(ACCEPT_WRITE);
+                    fieldObject.set(object, value);
+                    fieldObject.setAccessible(DECLINE_WRITE);
+                }
+            }
+        } catch (SQLException | InvocationTargetException
+                 | InstantiationException | IllegalAccessException
+                 | NoSuchMethodException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    /**
+     * @param rs полученные результаты запроса
+     * @param t  данные объекта класса
+     * @return list selected people
+     * Вывод на печать данных о полученном результате
+     * перечень полей получается из данных об объекте.
+     */
+    public static List<Object> getResultList(final ResultSet rs,
+                                             final Class<?> t) {
+        List<Object> resultList = new ArrayList<>();
+        List<String> fields = ObjectService.getAllFields(t);
+        try {
+            while (rs.next()) {
+                Object object = t.getDeclaredConstructor().newInstance();
+
+                for (String nameColumn : fields) {
+                    Field fieldObject = t.getDeclaredField(nameColumn);
+
+                    Object value = rs.getObject(nameColumn);
+                    fieldObject.setAccessible(ACCEPT_WRITE);
+                    fieldObject.set(object, value);
+                    fieldObject.setAccessible(DECLINE_WRITE);
+                }
+                resultList.add(object);
+            }
+        } catch (SQLException | InvocationTargetException
+                 | InstantiationException | IllegalAccessException
+                 | NoSuchMethodException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return resultList;
+    }
+
 }

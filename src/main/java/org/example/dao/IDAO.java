@@ -1,5 +1,7 @@
 package org.example.dao;
 
+import java.util.List;
+
 /**
  * @param <T> тип сущности.
  * @author Katerina
@@ -14,16 +16,18 @@ public interface IDAO<T> {
     void insert(T t);
 
     /**
-     * @param t объект сущности.
+     * @param t объект сущности
+     * @return найденная сущность.
      *          поиск сущности в базе данных.
      */
-    void selectById(T t);
+    Object selectById(T t);
 
     /**
      *  поиск всех сущностей в базе данных.
-     * @param t класс.
+     * @param t класс
+     * @return список найденных сущностей.
      */
-    void selectAll(Class<T> t);
+    List<Object> selectAll(Class<?> t);
 
     /**
      * @param t объект сущности.

@@ -49,7 +49,8 @@ public final class App {
         }
         System.out.println("Created person");
         for (Person person : personList) {
-            daoPerson.findPersonById(person);
+            Person findPerson = (Person) daoPerson.findPersonById(person);
+            System.out.println(findPerson);
         }
 
         Person person = personList.listIterator().next();
@@ -60,7 +61,8 @@ public final class App {
         daoPerson.deletePerson(personList.get(personList.size() - 1));
 
         System.out.println("\n\nAll people");
-        daoPerson.findAllPerson(Person.class);
+        List<Object> listPeople = daoPerson.findAllPerson(Person.class);
+        listPeople.stream().map(p -> (Person) p).forEach(System.out::println);
 
         JDBCConnection.closeConnection(daoPerson);
     }
@@ -84,6 +86,7 @@ public final class App {
 
     /**
      * полчение имени для тестирования.
+     *
      * @return имя
      */
     private static String getName() {
@@ -92,6 +95,7 @@ public final class App {
 
     /**
      * получение фамилии для тестирования.
+     *
      * @return фамилию
      */
     private static String getSurname() {

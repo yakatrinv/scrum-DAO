@@ -5,16 +5,11 @@ import org.example.dataSource.ObjectService;
 import org.example.entity.DataProperties;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.List;
-
-import static org.example.entity.DataProperties.PASS;
-import static org.example.entity.DataProperties.URL;
-import static org.example.entity.DataProperties.USER;
 
 /**
  * class for work with connection jbdc.
@@ -29,11 +24,6 @@ public final class JDBCConnection {
      * first index for set value in prepared statement.
      */
     public static final int FIRST_INDEX = 1;
-    /**
-     * tabulation.
-     */
-    public static final String CHAR_TAB = "\t";
-
     /**
      * private constructor.
      */
@@ -211,45 +201,5 @@ public final class JDBCConnection {
     }
 
 
-    /**
-     * @param rs  полученные результаты запроса
-     * @param t   данные объекта класса
-     * @param <T> тип сущности
-     *            Вывод на печать данных о полученном результате
-     *            перечень полей получается из данных об объекте.
-     */
-    public static <T> void printResult(final ResultSet rs, final T t) {
-        print(rs, t.getClass());
-    }
 
-    /**
-     * @param rs полученные результаты запроса
-     * @param t  данные объекта класса
-     *           Вывод на печать данных о полученном результате
-     *           перечень полей получается из данных об объекте.
-     */
-    public static void printClassResult(final ResultSet rs, final Class<?> t) {
-        print(rs, t);
-    }
-
-    /**
-     * @param rs полученные результаты запроса
-     * @param t  данные объекта класса
-     *           Вывод на печать данных о полученном результате
-     *           перечень полей получается из данных об объекте.
-     */
-    private static void print(final ResultSet rs, final Class<?> t) {
-        List<String> fields = ObjectService.getAllFields(t);
-        try {
-            while (rs.next()) {
-                System.out.println();
-                for (String field : fields) {
-                    String nameColumn = rs.getString(field);
-                    System.out.print(nameColumn + CHAR_TAB);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

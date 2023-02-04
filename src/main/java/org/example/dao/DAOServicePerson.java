@@ -2,6 +2,8 @@ package org.example.dao;
 
 import org.example.entity.Person;
 
+import java.util.List;
+
 /**
  * @author Katerina
  * @version 1.0
@@ -34,15 +36,15 @@ public class DAOServicePerson extends DAOService<Person> implements IDAOPerson {
      * поиск сущности в базе данных по id объекта класса Person.
      */
     @Override
-    public void findPersonById(final Person person) {
-        this.selectById(person);
+    public Object findPersonById(final Person person) {
+        return this.selectById(person);
     }
 
     /**
      * поиск всех сущностей в базе данных по id объекта класса Person.
      */
     @Override
-    public void findAllPerson(final Class<Person> personClass) {
-        this.selectAll(personClass);
+    public List<Object> findAllPerson(final Class<Person> personClass) {
+        return this.selectAll(personClass);
     }
 }

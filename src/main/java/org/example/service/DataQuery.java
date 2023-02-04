@@ -34,8 +34,9 @@ public final class DataQuery {
      * на добавдение записи в базе данных.
      */
     public static <T> String getInsertQuery(final T t) {
-        String nameTable = ObjectService.getNameTable(t.getClass());
-        List<String> listFields = ObjectService.getFieldsWithoutPk(t);
+        Class<?> aClass = t.getClass();
+        String nameTable = ObjectService.getNameTable(aClass);
+        List<String> listFields = ObjectService.getFieldsWithoutPk(aClass);
 
         String fields = String.join(DELIMITER, listFields);
 
@@ -54,7 +55,7 @@ public final class DataQuery {
      */
     public static <T> String getSelectQuery(final T t) {
         String nameTable = ObjectService.getNameTable(t.getClass());
-        List<String> listFields = ObjectService.getPkField(t);
+        List<String> listFields = ObjectService.getPkField(t.getClass());
 
         String fields = String.join(DELIMITER, listFields);
 
@@ -83,9 +84,10 @@ public final class DataQuery {
      * на обновление записи в базе данных.
      */
     public static <T> String getUpdateQuery(final T t) {
-        String nameTable = ObjectService.getNameTable(t.getClass());
-        List<String> listFields = ObjectService.getFieldsWithoutPk(t);
-        List<String> idFields = ObjectService.getPkField(t);
+        Class<?> aClass = t.getClass();
+        String nameTable = ObjectService.getNameTable(aClass);
+        List<String> listFields = ObjectService.getFieldsWithoutPk(aClass);
+        List<String> idFields = ObjectService.getPkField(aClass);
 
         String fields = String.join(DELIMITER_UPD, listFields) + DELIM_UPD_END;
         String idField = idFields.listIterator().next();
@@ -100,7 +102,7 @@ public final class DataQuery {
      */
     public static <T> String getDeleteQuery(final T t) {
         String nameTable = ObjectService.getNameTable(t.getClass());
-        List<String> listFields = ObjectService.getPkField(t);
+        List<String> listFields = ObjectService.getPkField(t.getClass());
 
         String fields = String.join(DELIMITER, listFields);
 
