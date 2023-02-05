@@ -4,6 +4,11 @@ import org.example.entity.Person;
 
 import java.util.List;
 
+/**
+ * @author Katerina
+ * @version 1.0
+ * интерфейс для работы с опреациями crud для класса Person.
+ */
 public interface ScrumSwrvice {
     /**
      * добавление элземплара класса Person в базу данных.
@@ -29,14 +34,16 @@ public interface ScrumSwrvice {
     /**
      * поиск сущности в базе данных по id объекта класса Person.
      *
-     * @param person тип сущности.
+     * @param person тип сущности
+     * @return найденная сущность.
      */
     Object findById(Person person);
 
     /**
      * поиск всех сущностей в базе данных по id объекта класса Person.
      *
-     * @param personClass класс.
+     * @param personClass класс
+     * @return список найденных сущностей.
      */
     List<Object> findAll(Class<Person> personClass);
 }

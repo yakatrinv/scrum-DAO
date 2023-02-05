@@ -1,15 +1,25 @@
 package org.example.services;
 
-import liquibase.servicelocator.LiquibaseService;
 import org.example.dao.DAOServicePerson;
 import org.example.entity.Person;
 
 import java.util.List;
 
+/**
+ * @author Katerina
+ * @version 1.0
+ * имплементация ScrumService для класса Person.
+ */
 public class ScrumServiceImpl implements ScrumSwrvice {
 
-    DAOServicePerson daoServicePerson = new DAOServicePerson();
+    /**
+     * сщздаем экземпляр класса DAOServicePerson.
+     */
+    private DAOServicePerson daoServicePerson = new DAOServicePerson();
 
+    /**
+     * добавление элземплара класса Person в базу данных.
+     */
     @Override
     public void create(final Person person) {
         daoServicePerson.createPerson(person);
