@@ -1,12 +1,15 @@
-package org.example;
+package org.example.dao;
 
-import org.example.impl.IDAOPerson;
+import org.example.entity.Person;
+
+import java.util.List;
+
 /**
  * @author Katerina
  * @version 1.0
  * имплементация DAO для класса Person.
  */
-public class DAOPerson extends DAO<Person> implements IDAOPerson {
+public class DAOServicePerson extends DAOService<Person> implements IDAOPerson {
     /**
      * добавление элземплара класса Person в базу данных.
      */
@@ -26,14 +29,22 @@ public class DAOPerson extends DAO<Person> implements IDAOPerson {
      */
     @Override
     public void deletePerson(final Person person) {
-        this.delete(person);
+        this.deleteById(person);
     }
 
     /**
      * поиск сущности в базе данных по id объекта класса Person.
      */
     @Override
-    public void findPerson(final Person person) {
-        this.select(person);
+    public Object findPersonById(final Person person) {
+        return this.selectById(person);
+    }
+
+    /**
+     * поиск всех сущностей в базе данных по id объекта класса Person.
+     */
+    @Override
+    public List<Object> findAllPerson(final Class<Person> personClass) {
+        return this.selectAll(personClass);
     }
 }

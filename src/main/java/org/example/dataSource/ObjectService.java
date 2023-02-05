@@ -1,10 +1,13 @@
-package org.example.service;
+package org.example.dataSource;
 
 import org.example.anno.MyColumn;
 import org.example.anno.MyTable;
 import org.example.anno.PrimaryKey;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +50,18 @@ public final class ObjectService {
      * полей с аннотацией PrimaryKey.
      */
     public static final boolean NO_ADD_PK = false;
+    /**
+     * установка возможности записи private переменной.
+     */
+    public static final boolean ACCEPT_WRITE = true;
+    /**
+     * возврат запрета возможности записи private переменной.
+     */
+    public static final boolean DECLINE_WRITE = false;
+    /**
+     * начальное значение для вставки в начало списка.
+     */
+    public static final int FIRST_INDEX = 0;
 
     /**
      * конструктор по умолчанию.
@@ -57,46 +72,52 @@ public final class ObjectService {
     /**
      * Получает имя таблицы в базе данных по аннотации MyTable.
      *
-     * @param object экземпляр класс
+     * @param aClass экземпляр класс
      * @return имя таблицы
      */
-    public static String getNameTable(final Object object) {
-        return object.getClass().getAnnotation(ANNO_MY_TABLE).name();
+    public static String getNameTable(final Class<?> aClass) {
+        return aClass.getAnnotation(ANNO_MY_TABLE).name();
     }
 
     /**
      * Получает перечень полей объекта с учетом указателей.
      *
-     * @param t         экземпляр класс
+     * @param aClass    класс
      * @param addFields указатель добавления полей с аннотацией MyColumn
      * @param addPk     указатель добавления полей с аннотацией PrimaryKey
+     * @param index     null, в конец списка, index - на указанную позицию
      * @return list строк имен полей
      */
-    public static List<String> getFields(final Object t,
+    public static List<String> getFields(final Class<?> aClass,
                                          final boolean addFields,
-                                         final boolean addPk) {
+                                         final boolean addPk,
+                                         final Integer index) {
         List<String> resultList = new ArrayList<>();
         Field fieldPk = null;
 
-        Field[] fieldsArray = t.getClass().getDeclaredFields();
+        Field[] fieldsArray = aClass.getDeclaredFields();
         for (Field field : fieldsArray) {
             if (addFields && field.isAnnotationPresent(ANNO_MY_COLUMN)
                     && !field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
-                field.setAccessible(true);
+                field.setAccessible(ACCEPT_WRITE);
                 resultList.add(field.getAnnotation(ANNO_MY_COLUMN).name());
-                field.setAccessible(false);
+                field.setAccessible(DECLINE_WRITE);
             }
 
             if (addPk && field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
-                field.setAccessible(true);
+                field.setAccessible(ACCEPT_WRITE);
                 fieldPk = field;
-                field.setAccessible(false);
+                field.setAccessible(DECLINE_WRITE);
             }
         }
 
         if (addPk && fieldPk != null) {
             String namePk = fieldPk.getAnnotation(ANNO_PRIMARY_KEY).name();
-            resultList.add(namePk);
+            if ((index == null)) {
+                resultList.add(namePk);
+            } else {
+                resultList.add(index, namePk);
+            }
         }
 
         return resultList;
@@ -108,8 +129,18 @@ public final class ObjectService {
      * @param t экземпляр класс
      * @return list строк имен полей
      */
-    public static List<String> getFieldsWithoutPk(final Object t) {
-        return getFields(t, ADD_FIELDS, NO_ADD_PK);
+    public static List<String> getAllFields(final Class<?> t) {
+        return getFields(t, ADD_FIELDS, ADD_PK, FIRST_INDEX);
+    }
+
+    /**
+     * Получает перечень полей объекта без поля PrimaryKey.
+     *
+     * @param t экземпляр класс
+     * @return list строк имен полей
+     */
+    public static List<String> getFieldsWithoutPk(final Class<?> t) {
+        return getFields(t, ADD_FIELDS, NO_ADD_PK, null);
     }
 
     /**
@@ -118,45 +149,45 @@ public final class ObjectService {
      * @param t экземпляр класс
      * @return list строк имен полей
      */
-    public static List<String> getPkField(final Object t) {
-        return getFields(t, NO_ADD_FIELDS, ADD_PK);
+    public static List<String> getPkField(final Class<?> t) {
+        return getFields(t, NO_ADD_FIELDS, ADD_PK, null);
     }
 
     /**
      * Получает перечень значений полей объекта с учетом указателей.
      *
-     * @param t         экземпляр класс
+     * @param object    экземпляр класс
      * @param addFields указатель добавления полей с аннотацией MyColumn
      * @param addPk     указатель добавления полей с аннотацией PrimaryKey
      * @return list значений полей объекта
      */
-    public static List<Object> getValues(final Object t,
+    public static List<Object> getValues(final Object object,
                                          final boolean addFields,
                                          final boolean addPk) {
         List<Object> resultList = new ArrayList<>();
         Object fieldPk = null;
 
-        Field[] fieldsArray = t.getClass().getDeclaredFields();
+        Field[] fieldsArray = object.getClass().getDeclaredFields();
         for (Field field : fieldsArray) {
             if (addFields && field.isAnnotationPresent(ANNO_MY_COLUMN)
                     && !field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
-                field.setAccessible(true);
+                field.setAccessible(ACCEPT_WRITE);
                 try {
-                    resultList.add(field.get(t));
+                    resultList.add(field.get(object));
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
-                field.setAccessible(false);
+                field.setAccessible(DECLINE_WRITE);
             }
 
             if (addPk && field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
-                field.setAccessible(true);
+                field.setAccessible(ACCEPT_WRITE);
                 try {
-                    fieldPk = field.get(t);
+                    fieldPk = field.get(object);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
-                field.setAccessible(false);
+                field.setAccessible(DECLINE_WRITE);
             }
         }
 
@@ -167,36 +198,37 @@ public final class ObjectService {
         return resultList;
     }
 
+
     /**
      * Получает перечень значений всех полей объекта.
      *
-     * @param t экземпляр класс
+     * @param object экземпляр класс
      * @return list значений полей объекта
      */
-    public static List<Object> getValuesWithPk(final Object t) {
-        return getValues(t, ADD_FIELDS, ADD_PK);
+    public static List<Object> getValuesWithPk(final Object object) {
+        return getValues(object, ADD_FIELDS, ADD_PK);
     }
 
     /**
      * Получает перечень значений полей объекта
      * без полей с аннотацией PrimaryKey.
      *
-     * @param t экземпляр класс
+     * @param object экземпляр класс
      * @return list значений полей объекта
      */
-    public static List<Object> getValuesWithoutPk(final Object t) {
-        return getValues(t, ADD_FIELDS, NO_ADD_PK);
+    public static List<Object> getValuesWithoutPk(final Object object) {
+        return getValues(object, ADD_FIELDS, NO_ADD_PK);
     }
 
     /**
      * Получает перечень значений полей объекта
      * с аннотацией PrimaryKey.
      *
-     * @param t экземпляр класс
+     * @param object экземпляр класс
      * @return list значений полей объекта
      */
-    public static List<Object> getValuesPk(final Object t) {
-        return getValues(t, NO_ADD_FIELDS, ADD_PK);
+    public static List<Object> getValuesPk(final Object object) {
+        return getValues(object, NO_ADD_FIELDS, ADD_PK);
     }
 
     /**
@@ -210,9 +242,9 @@ public final class ObjectService {
         for (Field field : fields) {
             if (field.isAnnotationPresent(ANNO_PRIMARY_KEY)) {
                 try {
-                    field.setAccessible(true);
+                    field.setAccessible(ACCEPT_WRITE);
                     field.set(t, value);
-                    field.setAccessible(false);
+                    field.setAccessible(DECLINE_WRITE);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -220,4 +252,68 @@ public final class ObjectService {
             }
         }
     }
+
+    /**
+     * @param rs полученные результаты запроса
+     * @param t  данные объекта класса
+     * @return selected person
+     * Вывод на печать данных о полученном результате
+     * перечень полей получается из данных об объекте.
+     */
+    public static Object getResult(final ResultSet rs, final Class<?> t) {
+        Object object = null;
+        List<String> fields = ObjectService.getAllFields(t);
+        try {
+            if (rs.next()) {
+                object = t.getDeclaredConstructor().newInstance();
+
+                for (String nameColumn : fields) {
+                    Object value = rs.getObject(nameColumn);
+                    Field fieldObject = t.getDeclaredField(nameColumn);
+                    fieldObject.setAccessible(ACCEPT_WRITE);
+                    fieldObject.set(object, value);
+                    fieldObject.setAccessible(DECLINE_WRITE);
+                }
+            }
+        } catch (SQLException | InvocationTargetException
+                 | InstantiationException | IllegalAccessException
+                 | NoSuchMethodException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    /**
+     * @param rs полученные результаты запроса
+     * @param t  данные объекта класса
+     * @return list selected people
+     * Вывод на печать данных о полученном результате
+     * перечень полей получается из данных об объекте.
+     */
+    public static List<Object> getResultList(final ResultSet rs,
+                                             final Class<?> t) {
+        List<Object> resultList = new ArrayList<>();
+        List<String> fields = ObjectService.getAllFields(t);
+        try {
+            while (rs.next()) {
+                Object object = t.getDeclaredConstructor().newInstance();
+
+                for (String nameColumn : fields) {
+                    Field fieldObject = t.getDeclaredField(nameColumn);
+
+                    Object value = rs.getObject(nameColumn);
+                    fieldObject.setAccessible(ACCEPT_WRITE);
+                    fieldObject.set(object, value);
+                    fieldObject.setAccessible(DECLINE_WRITE);
+                }
+                resultList.add(object);
+            }
+        } catch (SQLException | InvocationTargetException
+                 | InstantiationException | IllegalAccessException
+                 | NoSuchMethodException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return resultList;
+    }
+
 }

@@ -1,6 +1,8 @@
-package org.example.impl;
+package org.example.dao;
 
-import org.example.Person;
+import org.example.entity.Person;
+
+import java.util.List;
 
 /**
  * @author Katerina
@@ -32,7 +34,16 @@ public interface IDAOPerson extends IDAO<Person> {
     /**
      * поиск сущности в базе данных по id объекта класса Person.
      *
-     * @param person тип сущности.
+     * @param person тип сущности
+     * @return найденная сущность.
      */
-    void findPerson(Person person);
+    Object findPersonById(Person person);
+
+    /**
+     * поиск всех сущностей в базе данных по id объекта класса Person.
+     *
+     * @param personClass класс
+     * @return список найденных сущностей.
+     */
+    List<Object> findAllPerson(Class<Person> personClass);
 }

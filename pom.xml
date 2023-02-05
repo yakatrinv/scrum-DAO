@@ -108,7 +108,7 @@
                 <configuration>
                     <propertyFile>liquibase.properties</propertyFile>
                     <changeLogFile>changelog.xml</changeLogFile>
-                    <searchPath>${basedir}/src/resources/liquibase</searchPath>
+                    <searchPath>${basedir}/src/test/resources/liquibase</searchPath>
                 </configuration>
                 <executions>
                     <execution>
@@ -157,6 +157,10 @@
                         <configuration>
                             <dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
                             <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+                            <excludes>
+                                <exclude>**/App.class</exclude>
+                                <exclude>**/entity/**/*</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                     <execution>

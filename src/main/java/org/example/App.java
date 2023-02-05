@@ -1,9 +1,13 @@
 package org.example;
 
-import org.example.service.ConnectionDB;
+import org.example.dao.DAOServicePerson;
+import org.example.entity.Person;
+import org.example.reposotiry.JDBCConnection;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Application DAO.
@@ -12,39 +16,19 @@ public final class App {
     /**
      * name for testing.
      */
-    public static final String MIKE = "Mike";
+    public static final String[] NAMES = {"Mike", "John", "Federico"};
     /**
      * surname for testing.
      */
-    public static final String ANDERSON = "Anderson";
+    public static final String[] SURNAMES = {"Anderson", "Parson", "Clinton"};
     /**
-     * name for testing.
+     * random.
      */
-    public static final String JOHN = "John";
-    /**
-     * surname for testing.
-     */
-    public static final String PARSON = "Parson";
-    /**
-     * name for testing.
-     */
-    public static final String FEDERICO = "Federico";
-    /**
-     * surname for testing.
-     */
-    public static final String CLINTON = "Clinton";
+    private static final Random RANDOM = new Random();
     /**
      * new name for testing.
      */
-    public static final String NEW_NAME = "new name";
-    /**
-     * index for testing.
-     */
-    public static final int ONE = 1;
-    /**
-     * index for testing.
-     */
-    public static final int ZERO = 0;
+    public static final String ADD_FOR_UPDATE = " update";
 
     /**
      * constructor.
@@ -53,42 +37,68 @@ public final class App {
     }
 
     /**
-     * @param args
-     * method for running project.
+     * @param args method for running project.
      */
     public static void main(final String[] args) {
         List<Person> personList = fillPersonList();
-        DAOPerson daoPerson = new DAOPerson();
-        daoPerson.setConnection(ConnectionDB.initConnection());
+        DAOServicePerson daoPerson = new DAOServicePerson();
+        daoPerson.setConnection(JDBCConnection.initConnection());
 
         for (Person person : personList) {
             daoPerson.createPerson(person);
         }
+        System.out.println("Created person");
         for (Person person : personList) {
-            daoPerson.findPerson(person);
+            Person findPerson = (Person) daoPerson.findPersonById(person);
+            System.out.println(findPerson);
         }
-        personList.get(ONE).setName(NEW_NAME);
-        daoPerson.updatePerson(personList.get(ONE));
-        daoPerson.deletePerson(personList.get(ZERO));
 
-        ConnectionDB.closeConnection(daoPerson);
+        Person person = personList.listIterator().next();
+        person.setName(person.getName() + ADD_FOR_UPDATE);
+        person.setSurname(person.getSurname() + ADD_FOR_UPDATE);
+        daoPerson.updatePerson(person);
+
+        daoPerson.deletePerson(personList.get(personList.size() - 1));
+
+        System.out.println("\n\nAll people");
+        List<Object> listPeople = daoPerson.findAllPerson(Person.class);
+        listPeople.stream().map(p -> (Person) p).forEach(System.out::println);
+
+        JDBCConnection.closeConnection(daoPerson);
     }
 
     /**
-     * @return
-     * fill testing list.
+     * @return fill testing list.
      */
     public static List<Person> fillPersonList() {
         List<Person> personList = new ArrayList<>();
         personList.add(Person.builder()
-                .name(MIKE)
-                .surname(ANDERSON).build());
+                .name(getName())
+                .surname(getSurname()).build());
         personList.add(Person.builder()
-                .name(JOHN)
-                .surname(PARSON).build());
+                .name(getName())
+                .surname(getSurname()).build());
         personList.add(Person.builder()
-                .name(FEDERICO)
-                .surname(CLINTON).build());
+                .name(getName())
+                .surname(getSurname()).build());
         return personList;
+    }
+
+    /**
+     * полчение имени для тестирования.
+     *
+     * @return имя
+     */
+    private static String getName() {
+        return NAMES[RANDOM.nextInt(NAMES.length)];
+    }
+
+    /**
+     * получение фамилии для тестирования.
+     *
+     * @return фамилию
+     */
+    private static String getSurname() {
+        return SURNAMES[RANDOM.nextInt(SURNAMES.length)];
     }
 }

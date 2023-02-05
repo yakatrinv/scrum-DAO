@@ -1,4 +1,4 @@
-package org.example;
+package org.example.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +23,6 @@ public class Person {
      * id человека.
      */
     @PrimaryKey(name = "id")
-    @MyColumn(name = "id")
     private int id;
     /**
      * имя персоны.
