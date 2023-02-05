@@ -1,7 +1,7 @@
 package org.example.dao;
 
-import org.example.service.JDBCConnection;
-import org.example.service.DataQuery;
+import org.example.reposotiry.JDBCConnection;
+import org.example.reposotiry.DataQuery;
 import org.example.dataSource.ObjectService;
 
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.reposotiry;
 
 import org.example.dao.DAOService;
 import org.example.dataSource.ObjectService;

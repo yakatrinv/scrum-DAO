@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.reposotiry;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

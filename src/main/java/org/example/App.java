@@ -2,7 +2,7 @@ package org.example;
 
 import org.example.dao.DAOServicePerson;
 import org.example.entity.Person;
-import org.example.service.JDBCConnection;
+import org.example.reposotiry.JDBCConnection;
 
 
 import java.util.ArrayList;

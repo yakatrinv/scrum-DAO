@@ -1,4 +1,4 @@
 /**
  * пакет сервисов.
  */
-package org.example.service;
+package org.example.reposotiry;

@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.reposotiry;
 
 import org.example.entity.Person;
 import org.junit.jupiter.api.Assertions;

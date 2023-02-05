@@ -1,7 +1,7 @@
 package org.example.dao;
 
 import org.example.entity.Person;
-import org.example.service.JDBCConnection;
+import org.example.reposotiry.JDBCConnection;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
