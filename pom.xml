@@ -199,6 +199,9 @@
                             <excludes>
                                 <exclude>**/App.class</exclude>
                                 <exclude>**/entity/**/*</exclude>
+                                <exclude>**/services/dto/**/*</exclude>
+                                <exclude>**/services/ScrumServiceImpl.class</exclude>
+                                <exclude>**/servlet/**/*</exclude>
                             </excludes>
                         </configuration>
                     </execution>
