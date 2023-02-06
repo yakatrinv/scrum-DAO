@@ -3,12 +3,20 @@ import javax.servlet.http.HttpServletRequest;
 
 import static org.example.entity.Util.COMMAND;
 
+/**
+ * @author Alexey
+ * @version 1.0
+ * CommandFactory.
+ */
 public final class CommandFactory {
     /**
      * CommandFactory singleton object.
      */
     private static final CommandFactory COMMAND_FACTORY = new CommandFactory();
 
+    /**
+     * constructor CommandFactory.
+     */
     private CommandFactory() {
     }
 

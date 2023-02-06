@@ -16,6 +16,11 @@ import static org.example.entity.Util.JSP_PEOPLE_NEW_JSP;
 import static org.example.entity.Util.NAME;
 import static org.example.entity.Util.SURNAME;
 
+/**
+ * @author Alexey
+ * @version 1.0
+ * implements ServletCommand.
+ */
 public final class CreateCommand implements ServletCommand {
     @Override
     public String execute(final HttpServletRequest request) {

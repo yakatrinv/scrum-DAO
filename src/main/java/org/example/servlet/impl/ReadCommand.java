@@ -15,6 +15,11 @@ import java.util.stream.Collectors;
 import static org.example.entity.Util.JSP_PEOPLE_INDEX_JSP;
 import static org.example.entity.Util.PEOPLE;
 
+/**
+ * @author Alexey
+ * @version 1.0
+ * implements ServletCommand.
+ */
 public final class ReadCommand implements ServletCommand {
     @Override
     public String execute(final HttpServletRequest request) {

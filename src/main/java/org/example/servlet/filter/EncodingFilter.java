@@ -9,6 +9,11 @@ import java.io.IOException;
 
 import static org.example.entity.Util.ENCODING;
 
+/**
+ * @author Alexey
+ * @version 1.0
+ * implements Filter.
+ */
 public final class EncodingFilter implements Filter {
     /**
      * application encoding value.

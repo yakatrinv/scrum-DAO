@@ -18,6 +18,11 @@ import static org.example.entity.Util.PERSON;
 import static org.example.entity.Util.PERSON_ID;
 import static org.example.entity.Util.SURNAME;
 
+/**
+ * @author Alexey
+ * @version 1.0
+ * implements ServletCommand.
+ */
 public final class UpdateCommand implements ServletCommand {
     @Override
     public String execute(final HttpServletRequest request) {

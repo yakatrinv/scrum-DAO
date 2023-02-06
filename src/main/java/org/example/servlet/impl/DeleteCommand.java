@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import static org.example.entity.Util.INDEX_JSP;
 import static org.example.entity.Util.PERSON_ID;
 
+/**
+ * @author Alexey
+ * @version 1.0
+ * implements ServletCommand.
+ */
 public final class DeleteCommand implements ServletCommand {
     @Override
     public String execute(final HttpServletRequest request) {

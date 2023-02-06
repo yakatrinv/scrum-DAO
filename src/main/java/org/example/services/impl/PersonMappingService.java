@@ -4,6 +4,11 @@ import org.example.entity.Person;
 import org.example.services.MappingService;
 import org.example.services.dto.PersonDto;
 
+/**
+ * @author Alexey
+ * @version 1.0
+ * имплементация MappingService.
+ */
 public final class PersonMappingService
         implements MappingService<Person, PersonDto> {
     @Override

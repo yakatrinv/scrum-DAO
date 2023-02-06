@@ -5,6 +5,11 @@ import org.example.servlet.impl.DeleteCommand;
 import org.example.servlet.impl.ReadCommand;
 import org.example.servlet.impl.UpdateCommand;
 
+/**
+ * @author Alexey
+ * @version 1.0
+ * Enum с набором команд.
+ */
 public enum CommandEnum {
     /**
      * command for creating new entities in database.
@@ -27,6 +32,10 @@ public enum CommandEnum {
      */
     private final ServletCommand servletCommand;
 
+    /**
+     * CommandEnum initialization.
+     * @param newServletCommand servletCommand
+     */
     CommandEnum(final ServletCommand newServletCommand) {
         servletCommand = newServletCommand;
     }
