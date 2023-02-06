@@ -19,8 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-final class DaoServiceTest {
+public final class DaoServiceTest {
     public static final String STR_ADD_UPD = " upd";
+    public static final String EQUALS_ALL_FIELDS = "Equals all fields";
     private static DAOServicePerson daoServicePerson;
 
     @BeforeAll
@@ -66,9 +67,10 @@ final class DaoServiceTest {
         Person expectedPerson = selectById(person.getId(),daoServicePerson.getConnection());
 
         assertNotNull(expectedPerson);
-        assertAll("Equals all fields",
-                () -> assertEquals(expectedPerson.getName(),person.getName()),
-                () -> assertEquals(expectedPerson.getSurname(),person.getSurname())
+        assertAll(EQUALS_ALL_FIELDS,
+                () -> assertEquals(expectedPerson.getName(), person.getName()),
+                () -> assertEquals(expectedPerson.getSurname(),
+                        person.getSurname())
         );
     }
 
@@ -78,9 +80,10 @@ final class DaoServiceTest {
         Person expectedPerson = (Person) daoServicePerson.findPersonById(person);
 
         assertNotNull(expectedPerson);
-        assertAll("Equals all fields",
-                () -> assertEquals(expectedPerson.getName(),person.getName()),
-                () -> assertEquals(expectedPerson.getSurname(),person.getSurname())
+        assertAll(EQUALS_ALL_FIELDS,
+                () -> assertEquals(expectedPerson.getName(), person.getName()),
+                () -> assertEquals(expectedPerson.getSurname(),
+                        person.getSurname())
         );
     }
 
@@ -93,9 +96,10 @@ final class DaoServiceTest {
         Person expectedPerson = selectById(person.getId(),daoServicePerson.getConnection());
 
         assertNotNull(expectedPerson);
-        assertAll("Equals all fields",
-                () -> assertEquals(expectedPerson.getName(),person.getName()),
-                () -> assertEquals(expectedPerson.getSurname(),person.getSurname())
+        assertAll(EQUALS_ALL_FIELDS,
+                () -> assertEquals(expectedPerson.getName(), person.getName()),
+                () -> assertEquals(expectedPerson.getSurname(),
+                        person.getSurname())
         );
     }
 
