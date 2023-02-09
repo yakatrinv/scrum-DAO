@@ -36,7 +36,7 @@ public final class DaoServiceTest {
 
     private static Stream<Arguments> providePeopleForTestSelect() {
         Person actualPerson = MockUtil.createTestPerson();
-        if (daoServicePerson.findPersonById(actualPerson) == null) {
+        if (daoServicePerson.findPerson(actualPerson) == null) {
             daoServicePerson.insert(actualPerson);
         }
         return Stream.of(Arguments.of(actualPerson));
@@ -45,7 +45,7 @@ public final class DaoServiceTest {
 
     private static Stream<Arguments> providePeopleForTestUpdate() {
         Person actualPerson = MockUtil.createTestPerson();
-        if (daoServicePerson.findPersonById(actualPerson) == null) {
+        if (daoServicePerson.findPerson(actualPerson) == null) {
             daoServicePerson.insert(actualPerson);
         }
         return Stream.of(Arguments.of(actualPerson));
@@ -54,7 +54,7 @@ public final class DaoServiceTest {
 
     private static Stream<Arguments> providePeopleForTestDelete() {
         Person actualPerson = MockUtil.createTestPerson();
-        if (daoServicePerson.findPersonById(actualPerson) == null) {
+        if (daoServicePerson.findPerson(actualPerson) == null) {
             daoServicePerson.insert(actualPerson);
         }
         return Stream.of(Arguments.of(actualPerson));
@@ -77,7 +77,7 @@ public final class DaoServiceTest {
     @ParameterizedTest
     @MethodSource("providePeopleForTestSelect")
     void testSelect(final Person person) {
-        Person expectedPerson = (Person) daoServicePerson.findPersonById(person);
+        Person expectedPerson = (Person) daoServicePerson.findPerson(person);
 
         assertNotNull(expectedPerson);
         assertAll(EQUALS_ALL_FIELDS,
@@ -115,7 +115,7 @@ public final class DaoServiceTest {
     @Test
     void testSelectAll() {
         Person actualPerson = MockUtil.createTestPerson();
-        if (daoServicePerson.findPersonById(actualPerson) == null) {
+        if (daoServicePerson.findPerson(actualPerson) == null) {
             daoServicePerson.insert(actualPerson);
         }
         List<Object> objectList = daoServicePerson.findAllPerson(Person.class);

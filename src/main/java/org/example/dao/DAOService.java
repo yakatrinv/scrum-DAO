@@ -68,7 +68,9 @@ public class DAOService<T> implements IDAO<T> {
 
 
     @Override
-    public void insert(final T t) {
+    public int insert(final T t) {
+        connection = JDBCConnection.initConnection();
+
         String query = DataQuery.getInsertQuery(t);
 
         statement = JDBCConnection.initStatement(query,
@@ -78,8 +80,12 @@ public class DAOService<T> implements IDAO<T> {
                 statement);
         JDBCConnection.commit(connection,
                 statement);
-        JDBCConnection.setId(t,
+        int id = JDBCConnection.setId(t,
                 statement);
+
+        JDBCConnection.closeConnection(this);
+
+        return id;
     }
 
     /**
@@ -87,7 +93,9 @@ public class DAOService<T> implements IDAO<T> {
      * @since 1.0
      */
     @Override
-    public Object selectById(final T t) {
+    public Object select(final T t) {
+        connection = JDBCConnection.initConnection();
+
         Object object = null;
         String query = DataQuery.getSelectQuery(t);
 
@@ -101,6 +109,9 @@ public class DAOService<T> implements IDAO<T> {
 
             object = ObjectService.getResult(rs, t.getClass());
         }
+
+        JDBCConnection.closeConnection(this);
+
         return object;
     }
 
@@ -109,6 +120,8 @@ public class DAOService<T> implements IDAO<T> {
      */
     @Override
     public List<Object> selectAll(final Class<?> t) {
+        connection = JDBCConnection.initConnection();
+
         List<Object> objectList = new ArrayList<>();
         String query = DataQuery.getSelectAllQuery(t);
 
@@ -119,6 +132,8 @@ public class DAOService<T> implements IDAO<T> {
         if (rs != null) {
             objectList = ObjectService.getResultList(rs, t);
         }
+
+        JDBCConnection.closeConnection(this);
         return objectList;
     }
 
@@ -128,6 +143,8 @@ public class DAOService<T> implements IDAO<T> {
      */
     @Override
     public void update(final T t) {
+        connection = JDBCConnection.initConnection();
+
         String query = DataQuery.getUpdateQuery(t);
 
         statement = JDBCConnection.initStatement(query,
@@ -137,6 +154,8 @@ public class DAOService<T> implements IDAO<T> {
                 statement);
         JDBCConnection.commit(connection,
                 statement);
+
+        JDBCConnection.closeConnection(this);
     }
 
     /**
@@ -144,7 +163,9 @@ public class DAOService<T> implements IDAO<T> {
      * @since 1.0
      */
     @Override
-    public void deleteById(final T t) {
+    public void delete(final T t) {
+        connection = JDBCConnection.initConnection();
+
         String query = DataQuery.getDeleteQuery(t);
 
         statement = JDBCConnection.initStatement(query,
@@ -154,5 +175,7 @@ public class DAOService<T> implements IDAO<T> {
                 statement);
         JDBCConnection.commit(connection,
                 statement);
+
+        JDBCConnection.closeConnection(this);
     }
 }

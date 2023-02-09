@@ -14,8 +14,9 @@ public interface IDAOPerson extends IDAO<Person> {
      * добавление элземплара класса Person в базу данных.
      *
      * @param person тип сущности.
+     * @return id добавленной сущности.
      */
-    void createPerson(Person person);
+    int createPerson(Person person);
 
     /**
      * изменение сущности в базе данных на значения элземплара класса Person.
@@ -37,7 +38,7 @@ public interface IDAOPerson extends IDAO<Person> {
      * @param person тип сущности
      * @return найденная сущность.
      */
-    Object findPersonById(Person person);
+    Object findPerson(Person person);
 
     /**
      * поиск всех сущностей в базе данных по id объекта класса Person.

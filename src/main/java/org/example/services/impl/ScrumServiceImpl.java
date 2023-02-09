@@ -66,7 +66,7 @@ public class ScrumServiceImpl implements ScrumSwrvice {
     @Override
     public PersonDto findById(final int id) {
         daoServicePerson.setConnection(JDBCConnection.initConnection());
-        Object foundPerson = daoServicePerson.findPersonById(
+        Object foundPerson = daoServicePerson.findPerson(
                 Person.builder().id(id).build());
         JDBCConnection.closeConnection(daoServicePerson);
         return personMappingService.convertToDTO((Person) foundPerson);

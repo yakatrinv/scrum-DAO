@@ -14,8 +14,8 @@ public class DAOServicePerson extends DAOService<Person> implements IDAOPerson {
      * добавление элземплара класса Person в базу данных.
      */
     @Override
-    public void createPerson(final Person person) {
-        this.insert(person);
+    public int createPerson(final Person person) {
+        return this.insert(person);
     }
     /**
      * изменение сущности в базе данных на значения элземплара класса Person.
@@ -29,15 +29,15 @@ public class DAOServicePerson extends DAOService<Person> implements IDAOPerson {
      */
     @Override
     public void deletePerson(final Person person) {
-        this.deleteById(person);
+        this.delete(person);
     }
 
     /**
      * поиск сущности в базе данных по id объекта класса Person.
      */
     @Override
-    public Object findPersonById(final Person person) {
-        return this.selectById(person);
+    public Object findPerson(final Person person) {
+        return this.select(person);
     }
 
     /**

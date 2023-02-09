@@ -184,17 +184,21 @@ public final class JDBCConnection {
      * @param t         объект сущности
      * @param <T>       тип сущности
      * @param statement current statement
+     * @return id .
      */
-    public static <T> void setId(final T t, final PreparedStatement statement) {
+    public static <T> int setId(final T t, final PreparedStatement statement) {
         ResultSet rs;
+        int id = 0;
         try {
             rs = statement.getGeneratedKeys();
             if (rs.next()) {
-                ObjectService.setId(rs.getInt(FIRST_INDEX), t);
+                id = rs.getInt(FIRST_INDEX);
+                ObjectService.setId(id, t);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return id;
     }
 
 

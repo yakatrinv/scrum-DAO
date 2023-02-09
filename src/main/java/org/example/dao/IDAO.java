@@ -10,17 +10,18 @@ import java.util.List;
  */
 public interface IDAO<T> {
     /**
-     * @param t объект сущности.
+     * @param t объект сущности
+     * @return id добавленной сущности.
      *          добавление сущности в базу данных.
      */
-    void insert(T t);
+    int insert(T t);
 
     /**
      * @param t объект сущности
      * @return найденная сущность.
      *          поиск сущности в базе данных.
      */
-    Object selectById(T t);
+    Object select(T t);
 
     /**
      *  поиск всех сущностей в базе данных.
@@ -39,5 +40,5 @@ public interface IDAO<T> {
      * @param t объект сущности.
      *          удаление сущности в базе данных.
      */
-    void deleteById(T t);
+    void delete(T t);
 }

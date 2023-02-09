@@ -1,8 +1,8 @@
 package org.example;
 
 import org.example.dao.DAOServicePerson;
+import org.example.dao.IDAOPerson;
 import org.example.entity.Person;
-import org.example.reposotiry.JDBCConnection;
 
 
 import java.util.ArrayList;
@@ -29,6 +29,19 @@ public final class App {
      * new name for testing.
      */
     public static final String ADD_FOR_UPDATE = " update";
+    /**
+     * string for testing.
+     */
+    public static final String CREATE_STRING =
+            "Поиск вновь созданных сущностей по id";
+    /**
+     * string for testing.
+     */
+    public static final String UPDATE_STRING = "Обновление сущности";
+    /**
+     * string for testing.
+     */
+    public static final String SELECT_ALL_STRING = "Вывод всех сущностей";
 
     /**
      * constructor.
@@ -41,30 +54,31 @@ public final class App {
      */
     public static void main(final String[] args) {
         List<Person> personList = fillPersonList();
-        DAOServicePerson daoPerson = new DAOServicePerson();
-        daoPerson.setConnection(JDBCConnection.initConnection());
 
+        IDAOPerson idaoPerson = new DAOServicePerson();
         for (Person person : personList) {
-            daoPerson.createPerson(person);
+            int id = idaoPerson.createPerson(person);
+            System.out.println(id);
         }
-        System.out.println("Created person");
+
+        System.out.println(CREATE_STRING);
         for (Person person : personList) {
-            Person findPerson = (Person) daoPerson.findPersonById(person);
+            Person findPerson = (Person) idaoPerson.findPerson(person);
             System.out.println(findPerson);
         }
 
+        System.out.println(UPDATE_STRING);
         Person person = personList.listIterator().next();
         person.setName(person.getName() + ADD_FOR_UPDATE);
         person.setSurname(person.getSurname() + ADD_FOR_UPDATE);
-        daoPerson.updatePerson(person);
+        idaoPerson.updatePerson(person);
+        System.out.println(person);
 
-        daoPerson.deletePerson(personList.get(personList.size() - 1));
+        idaoPerson.deletePerson(personList.get(personList.size() - 1));
 
-        System.out.println("\n\nAll people");
-        List<Object> listPeople = daoPerson.findAllPerson(Person.class);
+        System.out.println(SELECT_ALL_STRING);
+        List<Object> listPeople = idaoPerson.findAllPerson(Person.class);
         listPeople.stream().map(p -> (Person) p).forEach(System.out::println);
-
-        JDBCConnection.closeConnection(daoPerson);
     }
 
     /**
@@ -102,3 +116,4 @@ public final class App {
         return SURNAMES[RANDOM.nextInt(SURNAMES.length)];
     }
 }
+
