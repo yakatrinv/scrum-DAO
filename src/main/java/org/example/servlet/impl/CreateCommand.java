@@ -1,8 +1,8 @@
 package org.example.servlet.impl;
 
-import org.example.services.ScrumSwrvice;
-import org.example.services.dto.PersonDto;
-import org.example.services.impl.ScrumServiceImpl;
+import org.example.entity.PersonDto;
+import org.example.services.PersonDaoService;
+import org.example.services.impl.PersonDaoServiceImpl;
 import org.example.servlet.ServletCommand;
 import org.example.servlet.extractor.DtoExtractor;
 import org.example.servlet.extractor.impl.PersonDtoExtractor;
@@ -22,7 +22,8 @@ public final class CreateCommand implements ServletCommand {
     /**
      * service working with dao layer.
      */
-    private final ScrumSwrvice scrumSwrvice = new ScrumServiceImpl();
+    private final PersonDaoService personDaoService
+            = new PersonDaoServiceImpl();
     /**
      * extracts PersonDto objects from request.
      */
@@ -34,7 +35,7 @@ public final class CreateCommand implements ServletCommand {
         if (GET.equals(request.getMethod())) {
             return JSP_PEOPLE_NEW_JSP;
         }
-        scrumSwrvice.create(personDtoExtractor.extract(request));
+        personDaoService.create(personDtoExtractor.extract(request));
         return INDEX_JSP;
     }
 }

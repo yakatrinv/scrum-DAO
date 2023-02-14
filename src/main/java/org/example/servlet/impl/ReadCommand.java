@@ -1,7 +1,8 @@
 package org.example.servlet.impl;
-import org.example.services.ScrumSwrvice;
-import org.example.services.dto.PersonDto;
-import org.example.services.impl.ScrumServiceImpl;
+
+import org.example.entity.PersonDto;
+import org.example.services.PersonDaoService;
+import org.example.services.impl.PersonDaoServiceImpl;
 import org.example.servlet.ServletCommand;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +20,12 @@ public final class ReadCommand implements ServletCommand {
     /**
      * service working with dao layer.
      */
-    private final ScrumSwrvice scrumSwrvice = new ScrumServiceImpl();
+    private final PersonDaoService personDaoService
+            = new PersonDaoServiceImpl();
+
     @Override
     public String execute(final HttpServletRequest request) {
-        List<PersonDto> personDTOList = scrumSwrvice.findAll();
+        List<PersonDto> personDTOList = personDaoService.readAll();
         request.setAttribute(PEOPLE, personDTOList);
         return JSP_PEOPLE_INDEX_JSP;
     }

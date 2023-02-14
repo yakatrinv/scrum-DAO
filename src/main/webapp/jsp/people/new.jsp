@@ -21,12 +21,19 @@
             <input id="surnameInput" type="text" name="surname">
             <label for="surnameInput">Enter surname</label>
         </div>
-        <a href="#" onclick="this.closest('form').submit();return false;">
+        <a class="leftButton" href="#" onclick="this.closest('form').submit();return false;">
             <span></span>
             <span></span>
             <span></span>
             <span></span>
             Save
+        </a>
+        <a class="rightButton" href="${pageContext.request.contextPath}/dispatcher?command=read">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Cancel
         </a>
 
     </form>

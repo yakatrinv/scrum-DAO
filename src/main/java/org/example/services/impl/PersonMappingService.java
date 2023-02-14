@@ -1,8 +1,8 @@
 package org.example.services.impl;
 
 import org.example.entity.Person;
+import org.example.entity.PersonDto;
 import org.example.services.MappingService;
-import org.example.services.dto.PersonDto;
 
 /**
  * @author Alexey

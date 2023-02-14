@@ -14,6 +14,7 @@
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <jstl.version>1.2</jstl.version>
         <jsp-api.version>2.2</jsp-api.version>
+        <hibernate-entitymanager.version>5.6.14.Final</hibernate-entitymanager.version>
         <org.jacoco.version>0.8.8</org.jacoco.version>
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <liquibase-core.version>4.19.0</liquibase-core.version>
@@ -26,7 +27,6 @@
         <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
-        <mockito-core.version>2.7.3</mockito-core.version>
     </properties>
 
     <dependencies>
@@ -46,6 +46,11 @@
             <artifactId>jsp-api</artifactId>
             <version>${jsp-api.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate-entitymanager.version}</version>
         </dependency>
 
         <dependency>
@@ -96,12 +101,6 @@
             <artifactId>junit-platform-commons</artifactId>
             <version>${junit-platform-commons.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito-core.version}</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>

@@ -4,9 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.anno.MyColumn;
-import org.example.anno.MyTable;
-import org.example.anno.PrimaryKey;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import static org.example.entity.Util.ID;
+import static org.example.entity.Util.NAME;
+import static org.example.entity.Util.PERSON;
+import static org.example.entity.Util.SURNAME;
 
 /**
  * @author Katerina
@@ -17,21 +26,24 @@ import org.example.anno.PrimaryKey;
 @NoArgsConstructor
 @Data
 @Builder
-@MyTable(name = "person")
+@Entity
+@Table(name = PERSON)
 public class Person {
     /**
      * id человека.
      */
-    @PrimaryKey(name = "id")
+    @Id
+    @Column(name = ID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     /**
      * имя персоны.
      */
-    @MyColumn(name = "name")
+    @Column(name = NAME)
     private String name;
     /**
      * фамилия персоны.
      */
-    @MyColumn(name = "surname")
+    @Column(name = SURNAME)
     private  String surname;
 }
